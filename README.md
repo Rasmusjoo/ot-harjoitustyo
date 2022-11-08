@@ -1,4 +1,6 @@
-#Heading of the text
-This is text. **This is bold text. So bold!**
-This is some more normal text. Next we will have 
-italic text. *Here it is. Italic text. Wow.*
+# Ohjelmistotekniikka, harjoitustyö
+## Tehtävät
+### Viikko1
+[gitlog.txt](laskarit/viikko1/gitlog.txt)
+
+[komentorivi.txt](laskarit/viikko1/komentorivi.txt)

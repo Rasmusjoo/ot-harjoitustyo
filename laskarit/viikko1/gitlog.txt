@@ -111,3 +111,5 @@ Date:   Fri Nov 4 12:35:11 2022 +0200
 
  tiedosto.txt | 0
  1 file changed, 0 insertions(+), 0 deletions(-)
+
+Tämä on tehtävässä 17 pyydetty muutos

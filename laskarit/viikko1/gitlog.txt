@@ -1,0 +1,113 @@
+commit 9bd9efa9f522b5b18afe1c56403104f5f6ee1081
+Author: Rasmus <rasmus.saily@gmail.com>
+Date:   Tue Nov 8 14:43:49 2022 +0200
+
+    nimenvaihto ja poisto
+
+ tiedostoja/file2             | 0
+ tiedostoja/{file1 => file22} | 0
+ 2 files changed, 0 insertions(+), 0 deletions(-)
+
+commit b1138cdcdf55ab42dd3451267106aad63a85d373
+Author: Rasmus <rasmus.saily@gmail.com>
+Date:   Tue Nov 8 14:27:03 2022 +0200
+
+    Luotu hakemisto ja sinne tiedostoja
+
+ tiedostoja/file1 | 0
+ tiedostoja/file2 | 0
+ tiedostoja/file3 | 0
+ 3 files changed, 0 insertions(+), 0 deletions(-)
+
+commit 7396d332037c00bc67be62db24c9bc2f80274597
+Author: Rasmus <rasmus.saily@gmail.com>
+Date:   Fri Nov 4 13:44:40 2022 +0200
+
+    muutoksia
+
+ eka.txt    | 3 +--
+ kolmas.txt | 2 +-
+ 2 files changed, 2 insertions(+), 3 deletions(-)
+
+commit 7584fb721ab596b69015000757fedc7c1ae7d27b
+Author: Rasmus <rasmus.saily@gmail.com>
+Date:   Fri Nov 4 13:36:00 2022 +0200
+
+    nimenvaihto
+
+ tiedosto.txt => eka.txt | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit 7f14b9ea25b291305a0642092651ac86c3ebef0b
+Author: Rasmus <rasmus.saily@gmail.com>
+Date:   Fri Nov 4 13:33:42 2022 +0200
+
+    poisto
+
+ toinen.txt | 1 -
+ 1 file changed, 1 deletion(-)
+
+commit 39fade524add3526ab7d72717b56fe2fa23d7552
+Author: Rasmus <rasmus.saily@gmail.com>
+Date:   Fri Nov 4 13:24:40 2022 +0200
+
+    muokkaus
+
+ tiedosto.txt | 11 ++---------
+ 1 file changed, 2 insertions(+), 9 deletions(-)
+
+commit ac8b7e4a117dd800aa89c68f6bc799a80f211c04
+Author: Rasmus <rasmus.saily@gmail.com>
+Date:   Fri Nov 4 13:19:06 2022 +0200
+
+    muokkaus
+
+ tiedosto.txt | 26 +++++++++++++++++++++++++-
+ 1 file changed, 25 insertions(+), 1 deletion(-)
+
+commit 0bcdb9fa8547a03bc5316342f07b91a677e8c15f
+Author: Rasmus <rasmus.saily@gmail.com>
+Date:   Fri Nov 4 13:03:31 2022 +0200
+
+    stuff hakemisto luotu
+
+ stuff/textstuff.txt | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit c647eb24fa57609077a93c877811b61c307f8c12
+Author: Rasmus <rasmus.saily@gmail.com>
+Date:   Fri Nov 4 12:59:55 2022 +0200
+
+    muokkauksia
+
+ kolmas.txt | 1 +
+ toinen.txt | 1 +
+ 2 files changed, 2 insertions(+)
+
+commit 8c036859dd385f3e370580c71447ebc19003a2b8
+Author: Rasmus <rasmus.saily@gmail.com>
+Date:   Fri Nov 4 12:56:41 2022 +0200
+
+    kolmas.txt luotu
+
+ kolmas.txt | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit b9e1684a5b7ba7af04138997233cd2532067a907
+Author: Rasmus <rasmus.saily@gmail.com>
+Date:   Fri Nov 4 12:45:44 2022 +0200
+
+    muutos ja lisäys
+
+ tiedosto.txt | 1 +
+ toinen.txt   | 0
+ 2 files changed, 1 insertion(+)
+
+commit 275e67f67097eb7800bd31dbb01690d80181be63
+Author: Rasmus <rasmus.saily@gmail.com>
+Date:   Fri Nov 4 12:35:11 2022 +0200
+
+    tiedosto.txt luotu
+
+ tiedosto.txt | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)

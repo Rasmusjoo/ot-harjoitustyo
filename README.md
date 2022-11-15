@@ -8,3 +8,8 @@
 **Tämä on tehtävässä 16 pyydetty muutos**
 
 *Tämä on tehtävässä 17 pyydetty muutos*
+
+### Viikko2
+[vaatimusmaarittely.md](dokumentaatio/vaatimusmaarittely.md)
+
+[tuntikirjanpito.md](dokumentaatio/tuntikirjanpito.md)

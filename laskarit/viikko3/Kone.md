@@ -1,9 +1,9 @@
 ```mermaid
 sequenceDiagram
-participant K as Käyttäjä
-participant M as Machine
-participant E as Engine
-participant F as FuelTank
+participant K as main
+participant M as machine
+participant E as _engine
+participant F as _tank
 
 K->>M:Machine()
 M->>F:FuelTank()

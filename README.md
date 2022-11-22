@@ -1,15 +1,13 @@
-# Ohjelmistotekniikka, harjoitustyö
-## Tehtävät
-### Viikko1
-[gitlog.txt](laskarit/viikko1/gitlog.txt)
+# Tasohyppelypeli
+Sovelluksessa käyttäjä voi liikkua kartalla väistellen esteitä ja vihollisa klassisen tasohyppelypelin tyyliin. Sovellus on yksinpeli.
 
-[komentorivi.txt](laskarit/viikko1/komentorivi.txt)
+### Huomio Python-versiosta
+Soovellus on suunniteltu Python 3.8 järjestelmälle ja sitä uudemmille versioille. Testaamiseen on käytetty Pythonin versiota 3.10.6. Etenkin vanhempia versioita käyttäessä voi ilmetä ongelmia.
 
-**Tämä on tehtävässä 16 pyydetty muutos**
+### Dokumentaatio
 
-*Tämä on tehtävässä 17 pyydetty muutos*
+[Vaatimusmaarittely](dokumentaatio/vaatimusmaarittely.md)
 
-### Viikko2
-[vaatimusmaarittely.md](dokumentaatio/vaatimusmaarittely.md)
+[Työaikakirjanpito](dokumentaatio/tuntikirjanpito.md)
 
-[tuntikirjanpito.md](dokumentaatio/tuntikirjanpito.md)
+[Changelog](laskarit/platformer/dokumentaatio/changelog.md)

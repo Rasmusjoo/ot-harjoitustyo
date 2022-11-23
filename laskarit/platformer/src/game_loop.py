@@ -1,10 +1,11 @@
-import pygame, sys
+import pygame
+import sys
 from settings import *
 from level import Level
 
-#pygame setup
+# pygame setup
 pygame.init()
-screen = pygame.display.set_mode((screen_width, screen_hight))
+screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HIGHT))
 clock = pygame.time.Clock()
 level = Level(level_map, screen)
 

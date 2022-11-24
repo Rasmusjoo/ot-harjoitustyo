@@ -11,6 +11,11 @@
 -Pelikenttää tulee näkyviin lisää pelaajan edetessä
 
 ## Viikko 4
--Pelihahmo ei mene läpi taustasta
+-Pelihahmo ei mene tasojen läpi
 
 -Pelihahmo pystyy liikkumaan myös pystysuunnassa
+
+-Lisätty peliin vihollisia
+
+- Myöskään viholliset eivät mene tasojen läpi
+

@@ -18,5 +18,10 @@
 -Lisätty peliin vihollisia
 -Käytetty aika kaksi tuntia
 
+### 25.11
+-Lisätty osalle vihollisista mahdollisuus liikkua
+-Parannettu rakennetta poistamalla toistoa
+-käytetty aika kolme tuntia
+
 ## Yhteensä tunteja
--Yhteensä 12.5 tuntia
+-Yhteensä 15.5 tuntia

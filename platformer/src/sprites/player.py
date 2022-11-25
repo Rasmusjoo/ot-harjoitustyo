@@ -12,8 +12,6 @@ class Player(sprite.Sprite):
             os.path.join(dirname, "..", "assets", "adventurer.png")
         )
 
-        self.width = self.image.get_width()
-        self.hight = self.image.get_height()
         self.rect = self.image.get_rect(topleft=pos)
         self.rect.center = pos
 
@@ -36,10 +34,6 @@ class Player(sprite.Sprite):
 
         if keys[pygame.K_SPACE]:
             self.jump()
-
-    def apply_gravity(self):
-        self.direction.y += self.gravity
-        self.rect.y += self.direction.y
 
     def jump(self):
         self.direction.y = self.jump_speed

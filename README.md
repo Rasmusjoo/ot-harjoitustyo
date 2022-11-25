@@ -6,8 +6,8 @@ Soovellus on suunniteltu Python 3.8 järjestelmälle ja sitä uudemmille versioi
 
 ### Dokumentaatio
 
-[Vaatimusmaarittely](laskarit/platformer/dokumentaatio/vaatimusmaarittely.md)
+[Vaatimusmaarittely](platformer/dokumentaatio/vaatimusmaarittely.md)
 
-[Työaikakirjanpito](laskarit/platformer/dokumentaatio/tuntikirjanpito.md)
+[Työaikakirjanpito](platformer/dokumentaatio/tuntikirjanpito.md)
 
-[Changelog](laskarit/platformer/dokumentaatio/changelog.md)
+[Changelog](platformer/dokumentaatio/changelog.md)

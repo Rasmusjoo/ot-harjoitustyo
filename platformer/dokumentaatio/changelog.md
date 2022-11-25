@@ -19,3 +19,6 @@
 
 - Myöskään viholliset eivät mene tasojen läpi
 
+- Robotit pystyvät nyt liikkumaan
+
+-Lisätty elämät ja pisteet pelaajalle

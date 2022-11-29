@@ -8,10 +8,9 @@ from settings import TILE_SIZE, SCREEN_HIGHT, SCREEN_WIDTH
 
 
 class Level:
-    def __init__(self, level_data, surface):
+    def __init__(self, level_data):
 
         # level setup
-        self.display_surface = surface
         self.setup_level(level_data)
         self.world_shift_x = 0
         self.world_shift_x_change = 0
@@ -26,30 +25,39 @@ class Level:
         self.robots = pygame.sprite.Group()
         self.enemies = pygame.sprite.Group()
         self.coins = pygame.sprite.Group()
+        self.all_sprites = pygame.sprite.Group()
 
         for row_index, row in enumerate(layout):
             for col_index, cell in enumerate(row):
-                x = col_index * TILE_SIZE
-                y = row_index * TILE_SIZE
+                pos_x = col_index * TILE_SIZE
+                pos_y = row_index * TILE_SIZE
 
                 if cell == "X":
-                    tile = Tile((x, y), TILE_SIZE)
+                    tile = Tile((pos_x, pos_y), TILE_SIZE)
                     self.tiles.add(tile)
                 if cell == "P":
-                    self.starting_pos = (x, y)
-                    player_sprite = Player((x, y))
+                    self.starting_pos = (pos_x, pos_y)
+                    player_sprite = Player((pos_x, pos_y))
                     self.player.add(player_sprite)
                 if cell == "Z":
-                    zombie_sprite = Zombie((x, y))
+                    zombie_sprite = Zombie((pos_x, pos_y))
                     self.zombies.add(zombie_sprite)
                     self.enemies.add(zombie_sprite)
                 if cell == "R":
-                    robot_sprite = Robot((x, y))
+                    robot_sprite = Robot((pos_x, pos_y))
                     self.robots.add(robot_sprite)
                     self.enemies.add(robot_sprite)
                 if cell == "C":
-                    coin_sprite = Coin((x, y))
+                    coin_sprite = Coin((pos_x, pos_y))
                     self.coins.add(coin_sprite)
+
+        self.all_sprites.add(
+            self.tiles,
+            self.player,
+            self.zombies,
+            self.robots,
+            self.coins
+        )
 
     def scroll_x(self):
         player = self.player.sprite
@@ -112,6 +120,7 @@ class Level:
         self.world_shift_x = -self.world_shift_x_change
         self.world_shift_x_change = 0
         self.player.sprite = Player(self.starting_pos)
+        self.all_sprites.add(self.player.sprite)
         self.lives -= 1
 
     def player_falls_too_far(self):
@@ -140,7 +149,6 @@ class Level:
     def run(self):
         # Level tiles
         self.move_sprites_with_world(self.tiles, self.world_shift_x)
-        self.tiles.draw(self.display_surface)
         self.scroll_x()
 
         # Enemy check
@@ -150,23 +158,18 @@ class Level:
         self.player_collects_a_coin()
 
         # Player
-        self.player.update()
         self.player_horizontal_movement_collision()
         self.character_vertical_movement_collisison(self.player)
         self.player_falls_too_far()
-        self.player.draw(self.display_surface)
 
         # Zombie
         self.move_sprites_with_world(self.zombies, self.world_shift_x)
         self.character_vertical_movement_collisison(self.zombies)
-        self.zombies.draw(self.display_surface)
 
         # Robot
         self.move_sprites_with_world(self.robots, self.world_shift_x)
         self.robot_horizontal_movement_collision()
         self.character_vertical_movement_collisison(self.robots)
-        self.robots.draw(self.display_surface)
 
         # Coins
         self.move_sprites_with_world(self.coins, self.world_shift_x)
-        self.coins.draw(self.display_surface)

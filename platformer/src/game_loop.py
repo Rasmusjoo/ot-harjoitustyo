@@ -1,28 +1,43 @@
-import sys
 import pygame
-from settings import SCREEN_HIGHT, SCREEN_WIDTH, level_map
-from level import Level
 
-# pygame setup
-pygame.init()
-screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HIGHT))
-pygame.display.set_caption("Adventure")
-clock = pygame.time.Clock()
-level = Level(level_map, screen)
+class Gameloop:
+    def __init__(self, level, renderer, clock):
+        self.level = level
+        self.renderer = renderer
+        self.clock = clock
 
+    # pygame setup
+    def start(self):
+        while True:
+            if self._handle_events() is False:
+                break
+            self.player = self.level.player.sprite
 
-while True:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            sys.exit()
+            self._handle_events()
+            self.get_input()
+            self.level.run()
 
-    screen.fill("blue")
-    font = pygame.font.SysFont("Arial", 34)
-    points = font.render(f"Points:{level.points}", True, ("Black"))
-    lives = font.render(f"Lives:{level.lives}", True, ("Black"))
-    screen.blit(points, (0, 10))
-    screen.blit(lives, (0, 60))
-    level.run()
+            self._render()
+            self.clock.tick(60)
 
-    pygame.display.update()
-    clock.tick(60)
+    def get_input(self):
+        keys = pygame.key.get_pressed()
+
+        if keys[pygame.K_RIGHT]:
+            self.player.direction.x = 1
+
+        elif keys[pygame.K_LEFT]:
+            self.player.direction.x = -1
+        else:
+            self.player.direction.x = 0
+
+        if keys[pygame.K_SPACE]:
+            self.player.jump()
+
+    def _handle_events(self):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                return False
+
+    def _render(self):
+        self.renderer.render()

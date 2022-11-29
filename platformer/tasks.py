@@ -10,7 +10,7 @@ def coverage_report(ctx):
 
 @task
 def start(ctx):
-    ctx.run("python3 src/game_loop.py", pty=True)
+    ctx.run("python3 src/index.py", pty=True)
 
 @task
 def test(ctx):

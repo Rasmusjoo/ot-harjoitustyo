@@ -1,5 +1,7 @@
 # Changelog
+
 ## Viikko 3
+
 -Käyttäjä voi avata sovelluksen
 
 -Käyttäjä voi liikkua pelissä sivusuunnassa
@@ -11,6 +13,7 @@
 -Pelikenttää tulee näkyviin lisää pelaajan edetessä
 
 ## Viikko 4
+
 -Pelihahmo ei mene tasojen läpi
 
 -Pelihahmo pystyy liikkumaan myös pystysuunnassa
@@ -26,3 +29,5 @@
 -Lisätty testejä
 
 -Poistettu koodista toistuvuutta
+
+-Parannettu koodin rakennetta

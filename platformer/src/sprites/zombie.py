@@ -18,6 +18,3 @@ class Zombie(sprite.Sprite):
         # zombie movement
         self.direction = pygame.math.Vector2(2, 0)
         self.gravity = 0.8
-
-    def update(self, x_shift):
-        self.rect.x += x_shift

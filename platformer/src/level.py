@@ -133,9 +133,13 @@ class Level:
                 sprite.kill()
                 self.points += 1
 
+    def move_sprites_with_world(self, group, x_shift):
+        for sprite in group.sprites():
+            sprite.rect.x += x_shift
+
     def run(self):
         # Level tiles
-        self.tiles.update(self.world_shift_x)
+        self.move_sprites_with_world(self.tiles, self.world_shift_x)
         self.tiles.draw(self.display_surface)
         self.scroll_x()
 
@@ -153,16 +157,16 @@ class Level:
         self.player.draw(self.display_surface)
 
         # Zombie
-        self.zombies.update(self.world_shift_x)
+        self.move_sprites_with_world(self.zombies, self.world_shift_x)
         self.character_vertical_movement_collisison(self.zombies)
         self.zombies.draw(self.display_surface)
 
         # Robot
-        self.robots.update(self.world_shift_x)
+        self.move_sprites_with_world(self.robots, self.world_shift_x)
         self.robot_horizontal_movement_collision()
         self.character_vertical_movement_collisison(self.robots)
         self.robots.draw(self.display_surface)
 
         # Coins
-        self.coins.update(self.world_shift_x)
+        self.move_sprites_with_world(self.coins, self.world_shift_x)
         self.coins.draw(self.display_surface)

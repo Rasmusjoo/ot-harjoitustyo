@@ -22,3 +22,7 @@
 - Robotit pystyvät nyt liikkumaan
 
 -Lisätty elämät ja pisteet pelaajalle
+
+-Lisätty testejä
+
+-Poistettu koodista toistuvuutta

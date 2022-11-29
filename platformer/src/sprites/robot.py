@@ -20,6 +20,3 @@ class Robot(sprite.Sprite):
         self.direction.x = 1
         self.gravity = 0.8
         self.speed = 4
-
-    def update(self, x_shift):
-        self.rect.x += x_shift

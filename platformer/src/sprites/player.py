@@ -5,21 +5,17 @@ dirname = os.path.dirname(__file__)
 
 
 class Player(sprite.Sprite):
-    def __init__(self, pos):
-        super().__init__()
+    def __init__(self, pos, groups):
+        super().__init__(groups)
 
         self.image = pygame.image.load(
             os.path.join(dirname, "..", "assets", "adventurer.png")
         )
 
+        self.mask = pygame.mask.from_surface(self.image)
         self.rect = self.image.get_rect(topleft=pos)
-        self.rect.center = pos
+        self.on_floor = False
 
         # player movement
-        self.direction = pygame.math.Vector2(2, 0)
+        self.direction = pygame.math.Vector2()
         self.speed = 8
-        self.gravity = 0.8
-        self.jump_speed = -16
-
-    def jump(self):
-        self.direction.y = self.jump_speed

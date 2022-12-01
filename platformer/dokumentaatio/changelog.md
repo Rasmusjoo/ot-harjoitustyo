@@ -31,3 +31,9 @@
 -Poistettu koodista toistuvuutta
 
 -Parannettu koodin rakennetta
+
+## Viikko 5
+
+-Parannettu hyppimistä niin, ettei hyppyjä voi tehdä ilmassa
+
+-Parannettu kameran siirtymistä pelaajan mukana

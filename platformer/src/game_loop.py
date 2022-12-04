@@ -6,31 +6,33 @@ class Gameloop:
         self.level = level
         self.renderer = renderer
         self.clock = clock
-        self.game_active = True
+        self.game_state = 0
 
     def start(self):
-        if self.game_active:
-            while True:
-                if self._handle_events() is False:
-                    break
+        while True:
+            if self._handle_events() is False:
+                break
+            if self.game_state == 0:
+                self._handle_events()
+                self.intro()
+
+            elif self.game_state == 1:
                 self.player = self.level.player_sprite
 
                 self._handle_events()
                 self.get_input()
                 self.level.run()
-
                 self._render()
-                self.clock.tick(60)
 
-                if self.level.lives <= 0:
-                    self.game_active == False
+            elif self.game_state == 2:
+                self._handle_events()
+                self.pause()
 
-        else:
-            while True:
-                if self._handle_events() is False:
-                    break
+            else:
                 self._handle_events()
                 self.game_over()
+
+            self.clock.tick(60)
 
     def get_input(self):
         keys = pygame.key.get_pressed()
@@ -61,9 +63,32 @@ class Gameloop:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return False
+            if self.game_state == 0:
+                # Press SPACE to start the game
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+                    self.game_state = 1
+            if self.game_state == 1:
+                # Press P to pause
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_p:
+                    self.game_state = 2
+                # game ends when player runs out of lives or presses Q
+                if self.level.lives <= 0 or event.type == pygame.KEYDOWN and event.key == pygame.K_q:
+                    self.game_state = 3
+            elif self.game_state == 2:
+                # Press P to unpause
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_p:
+                    self.game_state = 1
+
+        return True
 
     def _render(self):
         self.renderer.render()
 
+    def intro(self):
+        self.renderer.intro_screen()
+
     def game_over(self):
         self.renderer.end_screen()
+
+    def pause(self):
+        self.renderer.pause_screen()

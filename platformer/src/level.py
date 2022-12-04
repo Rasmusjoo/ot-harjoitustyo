@@ -4,6 +4,7 @@ from sprites.player import Player
 from sprites.robot import Robot
 from sprites.zombie import Zombie
 from sprites.tiles import Tile
+from sprites.cloud import Cloud
 from sprites.coin import Coin
 from settings import TILE_SIZE, SCREEN_HIGHT
 from camera import CameraGroup
@@ -39,32 +40,35 @@ class Level:
                 if cell == "X":
                     Tile((pos_x, pos_y), TILE_SIZE, [
                          self.visible_sprites, self.collision_sprites])
+                if cell == "W":
+                    Cloud((pos_x, pos_y), [
+                        self.visible_sprites, self.collision_sprites])
                 if cell == "P":
                     self.starting_pos = (pos_x, pos_y)
                     self.player_sprite = Player(
-                        (pos_x, pos_y), [self.visible_sprites, self.active_sprites])
-                    self.player.add(self.player_sprite)
+                        (pos_x, pos_y), [self.visible_sprites, self.active_sprites, self.player])
                 if cell == "Z":
-                    zombie_sprite = Zombie(
-                        (pos_x, pos_y), [self.visible_sprites, self.active_sprites, self.enemies])
-                    self.zombies.add(zombie_sprite)
+                    Zombie((pos_x, pos_y), [
+                           self.visible_sprites, self.active_sprites, self.enemies, self.zombies])
                 if cell == "R":
-                    robot_sprite = Robot(
-                        (pos_x, pos_y), [self.visible_sprites, self.active_sprites, self.enemies])
-                    self.robots.add(robot_sprite)
+                    Robot((pos_x, pos_y), [
+                          self.visible_sprites, self.active_sprites, self.enemies, self.robots])
                 if cell == "C":
-                    coin_sprite = Coin((pos_x, pos_y), [self.visible_sprites])
-                    self.coins.add(coin_sprite)
+                    Coin((pos_x, pos_y), [self.visible_sprites, self.coins])
 
     def player_horizontal_movement_collision(self):
-        for player in self.player.sprites():
-            player.rect.x += player.direction.x * player.speed
-            for sprite in self.collision_sprites.sprites():
-                if sprite.rect.colliderect(player.rect):
-                    if player.direction.x < 0:
-                        player.rect.left = sprite.rect.right
-                    elif player.direction.x > 0:
-                        player.rect.right = sprite.rect.left
+        player = self.player_sprite
+        player.rect.x += player.direction.x * player.speed
+        for sprite in self.collision_sprites.sprites():
+            if sprite.rect.colliderect(player.rect):
+                if player.direction.x < 0:
+                    player.rect.left = sprite.rect.right
+                elif player.direction.x > 0:
+                    player.rect.right = sprite.rect.left
+
+    def horizontal_collision_check(self, collisionpoint):
+        return [sprite for sprite in self.collision_sprites
+                if sprite.rect.collidepoint(collisionpoint)]
 
     def robot_horizontal_movement_collision(self):
         for robot in self.robots.sprites():
@@ -75,21 +79,17 @@ class Level:
 
             if robot.direction.x > 0:  # moving right
                 # check floor collision
-                floor_sprites = [
-                    sprite for sprite in self.collision_sprites if sprite.rect.collidepoint(right_gap)]
+                floor_sprites = self.horizontal_collision_check(right_gap)
                 # check wall collision
-                wall_sprites = [
-                    sprite for sprite in self.collision_sprites if sprite.rect.collidepoint(right_block)]
+                wall_sprites = self.horizontal_collision_check(right_block)
                 if wall_sprites or not floor_sprites:
                     robot.direction.x *= -1
 
             if robot.direction.x < 0:  # moving left
                 # check floor collision
-                floor_sprites = [
-                    sprite for sprite in self.collision_sprites if sprite.rect.collidepoint(left_gap)]
+                floor_sprites = self.horizontal_collision_check(left_gap)
                 # check wall collision
-                wall_sprites = [
-                    sprite for sprite in self.collision_sprites if sprite.rect.collidepoint(left_block)]
+                wall_sprites = self.horizontal_collision_check(left_block)
                 if wall_sprites or not floor_sprites:
                     robot.direction.x *= -1
 
@@ -120,8 +120,7 @@ class Level:
         player = self.player_sprite
         player.kill()
         self.player_sprite = Player(
-            self.starting_pos, [self.visible_sprites, self.active_sprites])
-        self.player.add(self.player_sprite)
+            self.starting_pos, [self.visible_sprites, self.active_sprites, self.player])
         self.lives -= 1
 
     def player_falls_too_far(self):
@@ -159,10 +158,8 @@ class Level:
         self.player_falls_too_far()
 
         # Zombie
-        #self.move_sprites_with_world(self.zombies, self.world_shift_x)
         self.character_vertical_movement_collisison(self.zombies)
 
         # Robot
-        #self.move_sprites_with_world(self.robots, self.world_shift_x)
         self.robot_horizontal_movement_collision()
         self.character_vertical_movement_collisison(self.robots)

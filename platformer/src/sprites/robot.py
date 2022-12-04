@@ -1,7 +1,7 @@
 import os
+from random import choice
 import pygame
 from pygame import sprite
-from random import choice
 dirname = os.path.dirname(__file__)
 
 

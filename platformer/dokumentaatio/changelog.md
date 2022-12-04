@@ -37,3 +37,11 @@
 -Parannettu hyppimistä niin, ettei hyppyjä voi tehdä ilmassa
 
 -Parannettu kameran siirtymistä pelaajan mukana
+
+-Luotu pelin lopetusmekanismi
+
+- Peli päättyy elämien loppuessa
+
+-Luotu lopetusruutu ja aloitusruutu
+
+-Luotu mahdollisuus pysäyttää peli

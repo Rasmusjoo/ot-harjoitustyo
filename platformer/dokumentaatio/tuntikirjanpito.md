@@ -45,6 +45,19 @@
 - parannettu vihollisten liikettä
 - käytetty aika neljä tuntia
 
+### 2.12
+
+- Saatu peli päättymään elmämien loppuessa
+- Luotu lopetusruutu
+- Luotu aloitusruutu
+- käytetty aika neljä tuntia
+
+### 3.12
+
+- Luotu mahdollisuus pysäyttää peli väliaikaisesti
+- Parannettu tasoa
+- käytetty aika kolme tuntia
+
 ## Yhteensä tunteja
 
-- Yhteensä 27.5 tuntia
+- Yhteensä 32.5 tuntia

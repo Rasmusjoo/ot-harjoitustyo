@@ -11,6 +11,11 @@ level_map = [
 
 ]
 
+test_level_map = [
+    "       ",
+    "  R    ",
+    "XXXXXXX"]
+
 
 TILE_SIZE = 128
 SCREEN_WIDTH = 1480

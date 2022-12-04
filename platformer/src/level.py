@@ -158,8 +158,8 @@ class Level:
         self.player_falls_too_far()
 
         # Zombie
-        self.character_vertical_movement_collisison(self.zombies)
+        # self.character_vertical_movement_collisison(self.zombies)
 
         # Robot
         self.robot_horizontal_movement_collision()
-        self.character_vertical_movement_collisison(self.robots)
+        # self.character_vertical_movement_collisison(self.robots)

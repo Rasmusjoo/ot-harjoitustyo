@@ -45,3 +45,5 @@
 -Luotu lopetusruutu ja aloitusruutu
 
 -Luotu mahdollisuus pysäyttää peli
+
+-lisääy testejä

@@ -11,3 +11,16 @@ class TestLevel(unittest.TestCase):
 
     def test_level_created_properly(self):
         self.assertNotEqual(self.level, None)
+
+    def test_player_loses_a_life_when_dying(self):
+        self.level.player_dies()
+        self.assertEqual(self.level.lives, 2)
+
+    def test_coin_check(self):
+        self.level.player_collects_a_coin()
+        self.assertEqual(self.level.points, 0)
+
+    def test_death_check(self):
+        self.level.player_hits_an_enemy()
+        self.level.player_falls_too_far()
+        self.assertEqual(self.level.lives, 3)

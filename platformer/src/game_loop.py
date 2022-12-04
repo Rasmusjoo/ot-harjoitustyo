@@ -10,26 +10,26 @@ class Gameloop:
 
     def start(self):
         while True:
-            if self._handle_events() is False:
+            if self.handle_events() is False:
                 break
             if self.game_state == 0:
-                self._handle_events()
+                self.handle_events()
                 self.intro()
 
             elif self.game_state == 1:
                 self.player = self.level.player_sprite
 
-                self._handle_events()
+                self.handle_events()
                 self.get_input()
                 self.level.run()
                 self._render()
 
             elif self.game_state == 2:
-                self._handle_events()
+                self.handle_events()
                 self.pause()
 
             else:
-                self._handle_events()
+                self.handle_events()
                 self.game_over()
 
             self.clock.tick(60)
@@ -59,7 +59,7 @@ class Gameloop:
         jump_speed = -30
         sprite.direction.y = jump_speed
 
-    def _handle_events(self):
+    def handle_events(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return False
@@ -72,7 +72,8 @@ class Gameloop:
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_p:
                     self.game_state = 2
                 # game ends when player runs out of lives or presses Q
-                if self.level.lives <= 0 or event.type == pygame.KEYDOWN and event.key == pygame.K_q:
+                q_press = event.type == pygame.KEYDOWN and event.key == pygame.K_q
+                if self.level.lives <= 0 or q_press:
                     self.game_state = 3
             elif self.game_state == 2:
                 # Press P to unpause

@@ -58,6 +58,11 @@
 - Parannettu tasoa
 - käytetty aika kolme tuntia
 
+### 4.12
+
+- Lisätty testejä
+- käytetty kolme tuntia
+
 ## Yhteensä tunteja
 
-- Yhteensä 32.5 tuntia
+- Yhteensä 35.5 tuntia

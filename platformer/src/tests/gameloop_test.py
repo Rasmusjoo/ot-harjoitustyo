@@ -2,7 +2,7 @@ import pygame
 import unittest
 from game_loop import Gameloop
 from level import Level
-from renderer import Renderer
+from ui.renderer import Renderer
 from settings import test_level_map
 
 

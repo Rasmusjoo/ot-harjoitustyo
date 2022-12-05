@@ -46,17 +46,13 @@ class Gameloop:
             self.player.direction.x = 0
 
         if keys[pygame.K_SPACE] and self.player.on_floor:
-            self.jump(self.player)
+            self.jump(self.player, -20)
 
         if keys[pygame.K_UP] and self.player.on_floor:
-            self.superjump(self.player)
+            self.jump(self.player, -30)
 
-    def jump(self, sprite):
-        jump_speed = -20
-        sprite.direction.y = jump_speed
-
-    def superjump(self, sprite):
-        jump_speed = -30
+    def jump(self, sprite, jump_height):
+        jump_speed = jump_height
         sprite.direction.y = jump_speed
 
     def handle_events(self):

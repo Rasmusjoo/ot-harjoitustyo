@@ -146,20 +146,16 @@ class Level:
 
         self.active_sprites.update()
 
-        # Enemy check
-        self.player_hits_an_enemy()
-
         # Coin check
         self.player_collects_a_coin()
 
         # Player
+        self.player_hits_an_enemy()
         self.player_horizontal_movement_collision()
         self.character_vertical_movement_collisison(self.player)
         self.player_falls_too_far()
 
         # Zombie
-        # self.character_vertical_movement_collisison(self.zombies)
 
         # Robot
         self.robot_horizontal_movement_collision()
-        # self.character_vertical_movement_collisison(self.robots)

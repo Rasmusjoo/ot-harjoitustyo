@@ -1,7 +1,7 @@
 import pygame
 from settings import SCREEN_HIGHT, SCREEN_WIDTH, level_map
 from level import Level
-from renderer import Renderer
+from ui.renderer import Renderer
 from game_loop import Gameloop
 
 

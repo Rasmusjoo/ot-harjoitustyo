@@ -63,6 +63,13 @@
 - Lisätty testejä
 - käytetty kolme tuntia
 
+### 5.12
+
+- Päivitetty README tiedostoa
+- Päivitetty arkkitehtuuri.md tiedostoa
+- Parannettu rakennetta
+- käytetty aika 2.5 tuntia
+
 ## Yhteensä tunteja
 
-- Yhteensä 35.5 tuntia
+- Yhteensä 38 tuntia

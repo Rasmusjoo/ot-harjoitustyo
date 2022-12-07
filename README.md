@@ -14,6 +14,11 @@ Soovellus on suunniteltu Python 3.8 järjestelmälle ja sitä uudemmille versioi
 
 [Arkkitehtuurikuvaus](platformer/dokumentaatio/arkkitehtuuri.md)
 
+## Julkaisut
+Linkki ensimmäiseen julkaisuun löytyy alta.
+
+https://github.com/Rasmusjoo/ot-harjoitustyo/releases/tag/viikko5
+
 ## Asennus
 1. Asenna riippuvuudet komennolla:
 

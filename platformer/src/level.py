@@ -6,7 +6,7 @@ from sprites.zombie import Zombie
 from sprites.tiles import Tile
 from sprites.cloud import Cloud
 from sprites.coin import Coin
-from settings import TILE_SIZE, SCREEN_HIGHT
+from settings import TILE_SIZE, WINDOW_HIGHT
 from camera import CameraGroup
 
 
@@ -24,7 +24,8 @@ class Level:
         self.coins = pygame.sprite.Group()
 
         # level setup
-        self.setup_level(level_data)
+        self.level_data = level_data
+        self.setup_level(self.level_data)
 
         self.starting_pos = (0, 0)
         self.lives = 3
@@ -57,8 +58,9 @@ class Level:
                     Coin((pos_x, pos_y), [self.visible_sprites, self.coins])
 
     def player_horizontal_movement_collision(self):
+        speed = 8
         player = self.player_sprite
-        player.rect.x += player.direction.x * player.speed
+        player.rect.x += player.direction.x * speed
         for sprite in self.collision_sprites.sprites():
             if sprite.rect.colliderect(player.rect):
                 if player.direction.x < 0:
@@ -93,7 +95,8 @@ class Level:
                 if wall_sprites or not floor_sprites:
                     robot.direction.x *= -1
 
-            robot.rect.x += robot.direction.x * robot.speed
+            speed = 4
+            robot.rect.x += robot.direction.x * speed
 
     def apply_gravity(self, sprite):
         gravity = 0.8
@@ -125,7 +128,7 @@ class Level:
 
     def player_falls_too_far(self):
         player = self.player_sprite
-        if player.rect.y > SCREEN_HIGHT:
+        if player.rect.y > WINDOW_HIGHT:
             self.player_dies()
 
     def player_hits_an_enemy(self):
@@ -153,9 +156,8 @@ class Level:
         self.player_hits_an_enemy()
         self.player_horizontal_movement_collision()
         self.character_vertical_movement_collisison(self.player)
+        self.player_sprite.update()
         self.player_falls_too_far()
-
-        # Zombie
 
         # Robot
         self.robot_horizontal_movement_collision()

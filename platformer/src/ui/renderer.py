@@ -1,5 +1,5 @@
 import pygame
-from settings import SCREEN_HIGHT, SCREEN_WIDTH
+from settings import WINDOW_HIGHT, WINDOW_WIDTH
 
 
 class Renderer:
@@ -26,11 +26,11 @@ class Renderer:
         game_name = font1.render(
             "Adventure", True, ("Black"))
         game_name_rect = game_name.get_rect(
-            center=(SCREEN_WIDTH/2, SCREEN_HIGHT/2))
+            center=(WINDOW_WIDTH/2, WINDOW_HIGHT/2))
         starting_instruction = font2.render(
             "Press SPACE to start", True, ("Black"))
         starting_instruction_rect = starting_instruction.get_rect(
-            center=(SCREEN_WIDTH/2, SCREEN_HIGHT/2 + 100))
+            center=(WINDOW_WIDTH/2, WINDOW_HIGHT/2 + 100))
         self.screen.blit(game_name, game_name_rect)
         self.screen.blit(starting_instruction, starting_instruction_rect)
 
@@ -41,16 +41,21 @@ class Renderer:
         font1 = pygame.font.SysFont("Arial", 100)
         font2 = pygame.font.SysFont("Arial", 50)
 
-        game_over_text = font1.render(
+        game_over = font1.render(
             "GAME OVER", True, ("Black"))
-        game_over_text_rect = game_over_text.get_rect(
-            center=(SCREEN_WIDTH/2, SCREEN_HIGHT/2))
+        game_over_rect = game_over.get_rect(
+            center=(WINDOW_WIDTH/2, WINDOW_HIGHT/2))
         points = font2.render(
             f"Points gained:{self.level.points}", True, ("Black"))
         points_rect = points.get_rect(
-            center=(SCREEN_WIDTH/2, SCREEN_HIGHT/2 + 100))
-        self.screen.blit(game_over_text, game_over_text_rect)
+            center=(WINDOW_WIDTH/2, WINDOW_HIGHT/2 + 150))
+        restart = font2.render(
+            "Press S to restart", True, ("Black"))
+        restart_rect = restart.get_rect(
+            center=(WINDOW_WIDTH/2, WINDOW_HIGHT/2 + 250))
+        self.screen.blit(game_over, game_over_rect)
         self.screen.blit(points, points_rect)
+        self.screen.blit(restart, restart_rect)
 
         pygame.display.update()
 
@@ -61,7 +66,7 @@ class Renderer:
         paused_text = font1.render(
             "PAUSED", True, ("Black"))
         paused_text_rect = paused_text.get_rect(
-            center=(SCREEN_WIDTH/2, SCREEN_HIGHT/2))
+            center=(WINDOW_WIDTH/2, WINDOW_HIGHT/2))
         self.screen.blit(paused_text, paused_text_rect)
 
         pygame.display.update()

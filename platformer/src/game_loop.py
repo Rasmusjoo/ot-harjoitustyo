@@ -2,11 +2,12 @@ import pygame
 
 
 class Gameloop:
-    def __init__(self, level, renderer, clock):
+    def __init__(self, level, renderer, clock, event_queue):
         self.level = level
         self.renderer = renderer
         self.clock = clock
         self.game_state = 0
+        self.event_queue = event_queue
 
     def start(self):
         while True:
@@ -34,14 +35,24 @@ class Gameloop:
 
             self.clock.tick(60)
 
+    def restart(self):
+        for sprite in self.level.visible_sprites:
+            sprite.kill()
+        self.level.points = 0
+        self.level.lives = 3
+        self.level.setup_level(self.level.level_data)
+        self.game_state = 1
+
     def get_input(self):
         keys = pygame.key.get_pressed()
 
         if keys[pygame.K_RIGHT]:
             self.player.direction.x = 1
+            self.player.orientation = "right"
 
         elif keys[pygame.K_LEFT]:
             self.player.direction.x = -1
+            self.player.orientation = "left"
         else:
             self.player.direction.x = 0
 
@@ -56,7 +67,7 @@ class Gameloop:
         sprite.direction.y = jump_speed
 
     def handle_events(self):
-        for event in pygame.event.get():
+        for event in self.event_queue.get():
             if event.type == pygame.QUIT:
                 return False
             if self.game_state == 0:
@@ -75,6 +86,9 @@ class Gameloop:
                 # Press P to unpause
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_p:
                     self.game_state = 1
+            if self.game_state == 3:
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_s:
+                    self.restart()
 
         return True
 

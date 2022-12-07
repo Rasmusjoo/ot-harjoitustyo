@@ -1,19 +1,22 @@
 import pygame
-from settings import SCREEN_HIGHT, SCREEN_WIDTH, level_map
+from settings import WINDOW_HIGHT, WINDOW_WIDTH, level_map
 from level import Level
 from ui.renderer import Renderer
 from game_loop import Gameloop
+from event_queue import EventQueue
+from clock import Clock
 
 
 def main():
-    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HIGHT))
+    window = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HIGHT))
     pygame.display.set_caption("Adventure")
 
     level = Level(level_map)
-    renderer = Renderer(level, screen)
-    clock = pygame.time.Clock()
+    renderer = Renderer(level, window)
+    clock = Clock()
+    event_queue = EventQueue()
 
-    game_loop = Gameloop(level, renderer, clock)
+    game_loop = Gameloop(level, renderer, clock, event_queue)
     pygame.init()
     game_loop.start()
 

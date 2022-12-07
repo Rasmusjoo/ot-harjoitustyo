@@ -70,6 +70,21 @@
 - Parannettu rakennetta
 - käytetty aika 2.5 tuntia
 
+### 6.12
+
+- Aloitettu animaatioiden luomista
+- käytetty noin kolme tuntia
+
+### 7.12
+
+- Luotu peliin mahdollisuus aloittaa uusi peli pelin loputtua
+
+- Paranneltu pelaajan animaatioita
+
+- Lisätty testejä
+
+- Käytetty aika noin viisi
+
 ## Yhteensä tunteja
 
-- Yhteensä 38 tuntia
+- Yhteensä 47 tuntia

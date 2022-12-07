@@ -1,17 +1,15 @@
-import os
 from random import choice
 import pygame
 from pygame import sprite
-dirname = os.path.dirname(__file__)
+from support import load_assets
 
 
 class Robot(sprite.Sprite):
     def __init__(self, pos, groups):
         super().__init__(groups)
 
-        self.image = pygame.image.load(
-            os.path.join(dirname, "..", "assets", "robot.png")
-        )
+        folder = "robot"
+        self.image = load_assets(folder, "robot.png")
 
         self.mask = pygame.mask.from_surface(self.image)
         self.rect = self.image.get_rect(topleft=pos)
@@ -19,4 +17,3 @@ class Robot(sprite.Sprite):
 
         # robot movement
         self.direction = pygame.math.Vector2(choice((1, -1)), 0)
-        self.speed = 4

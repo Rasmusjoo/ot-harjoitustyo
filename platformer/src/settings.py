@@ -7,19 +7,24 @@ level_map = [
     "XXXX        Z      XXX    XXX         XX       ",
     "XXXXX  R   XXX CR XXXXXXXXXXXX       XXXX   R C",
     "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  R C XXXXXXXXXXX",
+    "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
     "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
 
 ]
 
 test_level_map = [
     "       ",
-    "  R    ",
+    "   P   ",
     "XXXXXXX"]
 
+test_level_map_2 = [
+    "       ",
+    "   P  Z",
+    "XXXXXXX"]
 
 TILE_SIZE = 128
-SCREEN_WIDTH = 1480
-SCREEN_HIGHT = 1000  # len(level_map) * TILE_SIZE
+WINDOW_WIDTH = 1480
+WINDOW_HIGHT = 1000  # len(level_map) * TILE_SIZE
 
 # camera
 camera_borders = {

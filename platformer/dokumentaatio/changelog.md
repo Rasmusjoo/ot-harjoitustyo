@@ -46,4 +46,14 @@
 
 -Luotu mahdollisuus pysäyttää peli
 
--lisääy testejä
+-lisätty testejä
+
+-Luotu animaatioita pelaajalle
+
+## Viikko 6
+
+-Parannettu pelaajan animaatioita
+
+-Lisätty testejä
+
+-Luotu mahdollisuus aloitta peli alusta sen loputtua

@@ -1,14 +1,12 @@
-import os
 import pygame
-dirname = os.path.dirname(__file__)
+from support import load_assets
 
 
 class Coin(pygame.sprite.Sprite):
     def __init__(self, pos, groups):
         super().__init__(groups)
-        coin_image = pygame.image.load(
-            os.path.join(dirname, "..", "assets", "coin.png")
-        )
+        coin_image = load_assets("coin", "coin.png")
+
         self.image = pygame.transform.rotozoom(coin_image, 0, 0.5)
 
         self.mask = pygame.mask.from_surface(self.image)

@@ -57,3 +57,9 @@
 -Lisätty testejä
 
 -Luotu mahdollisuus aloitta peli alusta sen loputtua
+
+-Peli tallettaa pisteet tiedostoon
+
+-Peli lataa pelikartan tiedostolta
+
+-Parannettu rakennetta

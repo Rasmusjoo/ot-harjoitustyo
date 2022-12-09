@@ -2,7 +2,7 @@ import pygame
 import unittest
 from game_loop import Gameloop
 from level import Level
-from settings import test_level_map, WINDOW_HIGHT, WINDOW_WIDTH
+from settings import WINDOW_HIGHT, WINDOW_WIDTH
 
 
 class StubClock:
@@ -43,7 +43,7 @@ class StubRenderer:
 
 class TestGameloop(unittest.TestCase):
     def setUp(self):
-        window = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HIGHT))
+        pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HIGHT))
         self.testrenderer = StubRenderer()
         self.testclock = pygame.time.Clock()
 
@@ -51,8 +51,8 @@ class TestGameloop(unittest.TestCase):
         events = [
             StubEvent(pygame.KEYDOWN, pygame.K_SPACE),
         ]
-        testlevel = Level(test_level_map)
-        testlevel.setup_level(test_level_map)
+        testlevel = Level("level_test")
+        testlevel.setup_level("level_test")
         test_event_queue = StubEventQueue(events)
         testgameloop = Gameloop(
             testlevel, self.testrenderer, self.testclock, test_event_queue)
@@ -65,8 +65,8 @@ class TestGameloop(unittest.TestCase):
             StubEvent(pygame.KEYDOWN, pygame.K_SPACE), StubEvent(
                 pygame.KEYDOWN, pygame.K_p)
         ]
-        testlevel = Level(test_level_map)
-        testlevel.setup_level(test_level_map)
+        testlevel = Level("level_test")
+        testlevel.setup_level("level_test")
         test_event_queue = StubEventQueue(events)
         testgameloop = Gameloop(
             testlevel, self.testrenderer, self.testclock, test_event_queue)
@@ -78,8 +78,8 @@ class TestGameloop(unittest.TestCase):
             StubEvent(pygame.KEYDOWN, pygame.K_SPACE), StubEvent(
                 pygame.KEYDOWN, pygame.K_p), StubEvent(pygame.KEYDOWN, pygame.K_p)
         ]
-        testlevel = Level(test_level_map)
-        testlevel.setup_level(test_level_map)
+        testlevel = Level("level_test")
+        testlevel.setup_level("level_test")
         test_event_queue = StubEventQueue(events)
         testgameloop = Gameloop(
             testlevel, self.testrenderer, self.testclock, test_event_queue)
@@ -91,8 +91,8 @@ class TestGameloop(unittest.TestCase):
             StubEvent(pygame.KEYDOWN, pygame.K_SPACE), StubEvent(
                 pygame.KEYDOWN, pygame.K_q)
         ]
-        testlevel = Level(test_level_map)
-        testlevel.setup_level(test_level_map)
+        testlevel = Level("level_test")
+        testlevel.setup_level("level_test")
         test_event_queue = StubEventQueue(events)
         testgameloop = Gameloop(
             testlevel, self.testrenderer, self.testclock, test_event_queue)
@@ -103,8 +103,8 @@ class TestGameloop(unittest.TestCase):
         events = [
             StubEvent(pygame.QUIT, pygame.K_0)
         ]
-        testlevel = Level(test_level_map)
-        testlevel.setup_level(test_level_map)
+        testlevel = Level("level_test")
+        testlevel.setup_level("level_test")
         test_event_queue = StubEventQueue(events)
         testgameloop = Gameloop(
             testlevel, self.testrenderer, self.testclock, test_event_queue)

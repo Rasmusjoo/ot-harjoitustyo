@@ -1,5 +1,5 @@
 import pygame
-from settings import WINDOW_HIGHT, WINDOW_WIDTH, level_map
+from settings import WINDOW_HIGHT, WINDOW_WIDTH
 from level import Level
 from ui.renderer import Renderer
 from game_loop import Gameloop
@@ -11,7 +11,7 @@ def main():
     window = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HIGHT))
     pygame.display.set_caption("Adventure")
 
-    level = Level(level_map)
+    level = Level("level_normal")
     renderer = Renderer(level, window)
     clock = Clock()
     event_queue = EventQueue()

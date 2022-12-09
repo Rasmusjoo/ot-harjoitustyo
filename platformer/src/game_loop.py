@@ -1,4 +1,5 @@
 import pygame
+from support import save_score
 
 
 class Gameloop:
@@ -8,6 +9,7 @@ class Gameloop:
         self.clock = clock
         self.game_state = 0
         self.event_queue = event_queue
+        self.player = None
 
     def start(self):
         while True:
@@ -18,7 +20,7 @@ class Gameloop:
                 self.intro()
 
             elif self.game_state == 1:
-                self.player = self.level.player_sprite
+                self.player = self.level.player
 
                 self.handle_events()
                 self.get_input()
@@ -34,6 +36,8 @@ class Gameloop:
                 self.game_over()
 
             self.clock.tick(60)
+
+        save_score(self.level.points)
 
     def restart(self):
         for sprite in self.level.visible_sprites:
@@ -81,6 +85,7 @@ class Gameloop:
                 # game ends when player runs out of lives or presses Q
                 q_press = event.type == pygame.KEYDOWN and event.key == pygame.K_q
                 if self.level.lives <= 0 or q_press:
+                    save_score(self.level.points)
                     self.game_state = 3
             elif self.game_state == 2:
                 # Press P to unpause
@@ -88,6 +93,7 @@ class Gameloop:
                     self.game_state = 1
             if self.game_state == 3:
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_s:
+                    save_score(self.level.points)
                     self.restart()
 
         return True

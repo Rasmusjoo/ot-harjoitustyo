@@ -8,22 +8,25 @@ from sprites.cloud import Cloud
 from sprites.coin import Coin
 from settings import TILE_SIZE, WINDOW_HIGHT
 from camera import CameraGroup
+from support import load_level
 
 
 class Level:
-    def __init__(self, level_data):
+    def __init__(self, levelmap):
 
         # sprite group setup
         self.visible_sprites = CameraGroup()
         self.active_sprites = pygame.sprite.Group()
         self.collision_sprites = pygame.sprite.Group()
-        self.player = pygame.sprite.Group()
         self.zombies = pygame.sprite.Group()
         self.robots = pygame.sprite.Group()
         self.enemies = pygame.sprite.Group()
         self.coins = pygame.sprite.Group()
 
+        self.player = None
+
         # level setup
+        level_data = load_level(levelmap)
         self.level_data = level_data
         self.setup_level(self.level_data)
 
@@ -46,8 +49,8 @@ class Level:
                         self.visible_sprites, self.collision_sprites])
                 if cell == "P":
                     self.starting_pos = (pos_x, pos_y)
-                    self.player_sprite = Player(
-                        (pos_x, pos_y), [self.visible_sprites, self.active_sprites, self.player])
+                    self.player = Player(
+                        (pos_x, pos_y), [self.visible_sprites, self.active_sprites])
                 if cell == "Z":
                     Zombie((pos_x, pos_y), [
                            self.visible_sprites, self.active_sprites, self.enemies, self.zombies])
@@ -59,7 +62,7 @@ class Level:
 
     def player_horizontal_movement_collision(self):
         speed = 8
-        player = self.player_sprite
+        player = self.player
         player.rect.x += player.direction.x * speed
         for sprite in self.collision_sprites.sprites():
             if sprite.rect.colliderect(player.rect):
@@ -103,43 +106,43 @@ class Level:
         sprite.direction.y += gravity
         sprite.rect.y += sprite.direction.y
 
-    def character_vertical_movement_collisison(self, group):
-        for character in group.sprites():
-            self.apply_gravity(character)
-            for sprite in self.collision_sprites.sprites():
-                if sprite.rect.colliderect(character.rect):
-                    if character.direction.y > 0:
-                        character.rect.bottom = sprite.rect.top
-                        character.direction.y = 0
-                        character.on_floor = True
-                    elif character.direction.y < 0:
-                        character.rect.top = sprite.rect.bottom
-                        character.direction.y = 0
+    def player_vertical_movement_collisison(self):
+        player = self.player
+        self.apply_gravity(player)
+        for sprite in self.collision_sprites.sprites():
+            if sprite.rect.colliderect(player.rect):
+                if player.direction.y > 0:
+                    player.rect.bottom = sprite.rect.top
+                    player.direction.y = 0
+                    player.on_floor = True
+                elif player.direction.y < 0:
+                    player.rect.top = sprite.rect.bottom
+                    player.direction.y = 0
 
-                if character.on_floor and character.direction.y != 0:
-                    character.on_floor = False
+            if player.on_floor and player.direction.y != 0:
+                player.on_floor = False
 
     def player_dies(self):
-        player = self.player_sprite
+        player = self.player
         player.kill()
-        self.player_sprite = Player(
-            self.starting_pos, [self.visible_sprites, self.active_sprites, self.player])
+        self.player = Player(
+            self.starting_pos, [self.visible_sprites, self.active_sprites])
         self.lives -= 1
 
     def player_falls_too_far(self):
-        player = self.player_sprite
+        player = self.player
         if player.rect.y > WINDOW_HIGHT:
             self.player_dies()
 
     def player_hits_an_enemy(self):
-        player = self.player_sprite
+        player = self.player
         enemy_collision = pygame.sprite.spritecollide(
             player, self.enemies, False, pygame.sprite.collide_mask)
         if enemy_collision:
             self.player_dies()
 
     def player_collects_a_coin(self):
-        player = self.player_sprite
+        player = self.player
         enemy_collision = pygame.sprite.spritecollide(
             player, self.coins, True, pygame.sprite.collide_mask)
         if enemy_collision:
@@ -155,8 +158,8 @@ class Level:
         # Player
         self.player_hits_an_enemy()
         self.player_horizontal_movement_collision()
-        self.character_vertical_movement_collisison(self.player)
-        self.player_sprite.update()
+        self.player_vertical_movement_collisison()
+        self.player.update()
         self.player_falls_too_far()
 
         # Robot

@@ -83,7 +83,17 @@
 
 - Lisätty testejä
 
-- Käytetty aika noin viisi
+- Käytetty aika noin viisi tuntia
+
+### 9.12
+
+- Saatu peli tallettamaan pisteet tiedostoon
+
+- Peli lataa nyt pelikartan tiedostolta
+
+- Lisätty testejä
+
+- Lisätty loppuruutuun paras saatu tulos
 
 ## Yhteensä tunteja
 

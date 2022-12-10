@@ -20,22 +20,10 @@ Linkki ensimmäiseen julkaisuun löytyy alta.
 [Julkaisu 1](https://github.com/Rasmusjoo/ot-harjoitustyo/releases/tag/viikko5)
 
 ## Asennus
-1. Asenna riippuvuudet komennolla:
+Asenna riippuvuudet komennolla:
 
 ```bash
 poetry install
-```
-
-2. Suorita vaadittavat alustustoimenpiteet komennolla:
-
-```bash
-poetry run invoke build
-```
-
-3. Käynnistä sovellus komennolla:
-
-```bash
-poetry run invoke start
 ```
 
 ## Komentorivitoiminnot

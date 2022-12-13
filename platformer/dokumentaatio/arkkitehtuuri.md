@@ -48,8 +48,8 @@ alt painallus oikea tai vasen nuolinäppäin
 G->>+L:siirrä hahmoa sivusuunnassa
 L->>-G:hahmo siirtyy haluttuun suuntaan
 else painallus SPACE tai ylös
-G->>+L:jump() tai superjump()
-L->>-G:hahmo hyppää
+G->>+L:jump(korkeus)
+L->>-G:hahmo hyppää halutun korkeuden
 end
 
 

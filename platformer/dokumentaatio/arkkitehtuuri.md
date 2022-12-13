@@ -11,8 +11,11 @@ classDiagram
     class Assets{-pictures}
 
     class Sprites
+    
+    class UI
 
 ```
+HUOM sovelluslogiikka ei tällä hetkellä ole jaoteltuna kansioihin. Näin ollen se ei näy pakkausrakenteessa.
 
 ## Sovelluslogiikka
 

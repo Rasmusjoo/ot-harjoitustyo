@@ -117,8 +117,10 @@
 
 - Lisätty käyttöohje
 
-- käytetty aika noin kolme tuntia
+- Lisätty testejä
+
+- käytetty aika noin viisi tuntia
 
 ## Yhteensä tunteja
 
-- Yhteensä 52 tuntia
+- Yhteensä 54 tuntia

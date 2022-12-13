@@ -4,6 +4,12 @@ from support import fetch_scores
 
 
 class Renderer:
+    '''Class for drawing everything in the game
+
+    Attributes:
+        level: Level class object to draw
+        screen: Screen to draw on
+    '''
     def __init__(self, level, screen):
         '''Classes constructor
 

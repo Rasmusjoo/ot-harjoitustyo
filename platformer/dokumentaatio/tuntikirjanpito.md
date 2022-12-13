@@ -95,6 +95,30 @@
 
 - Lisätty loppuruutuun paras saatu tulos
 
+### 11.12
+
+- Aloitettu uuden tason luominen
+
+- Peli hakee nyt lopussa suurimman tuloksen tiedostosta.
+
+- Käytetty aika noin tunti
+
+### 12.12
+
+- Tehty koodiin docstringejä
+
+- Käytetty aika noin tunti
+
+### 13.12
+
+- Tehty lisää docstringejä
+
+- Luotu peliin keino läpäistä taso
+
+- Lisätty käyttöohje
+
+- käytetty aika noin kolme tuntia
+
 ## Yhteensä tunteja
 
-- Yhteensä 47 tuntia
+- Yhteensä 52 tuntia

@@ -8,10 +8,12 @@ from clock import Clock
 
 
 def main():
+    '''Starts the game
+    '''
     window = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HIGHT))
     pygame.display.set_caption("Adventure")
 
-    level = Level("level_normal")
+    level = Level("level_1")
     renderer = Renderer(level, window)
     clock = Clock()
     event_queue = EventQueue()

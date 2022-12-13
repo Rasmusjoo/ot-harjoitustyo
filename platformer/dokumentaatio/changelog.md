@@ -63,3 +63,7 @@
 -Peli lataa pelikartan tiedostolta
 
 -Parannettu rakennetta
+
+-Luotu peliin voittomekaniikka
+
+-Luotu koodiin docstringejä

@@ -10,3 +10,26 @@ class TestPlayer(unittest.TestCase):
 
     def test_player_created_properly(self):
         self.assertNotEqual(self.player, None)
+
+    def test_player_status_correct(self):
+        statuses = []
+        correct_statuses = ["jump", "fall", "run", "idle"]
+
+        self.player.direction.y = -10
+        self.player.get_status()
+        statuses.append(self.player.status)
+
+        self.player.direction.y = 10
+        self.player.get_status()
+        statuses.append(self.player.status)
+        
+        self.player.direction.y = 0
+        self.player.direction.x = 10
+        self.player.get_status()
+        statuses.append(self.player.status)
+
+        self.player.direction.x = 0
+        self.player.get_status()
+        statuses.append(self.player.status)
+
+        self.assertEqual(statuses, correct_statuses)

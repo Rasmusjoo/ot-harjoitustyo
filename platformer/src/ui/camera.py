@@ -4,6 +4,8 @@ from settings import camera_borders
 
 class CameraGroup(pygame.sprite.Group):
     def __init__(self):
+        '''Classes constructor
+        '''
         super().__init__()
         self.display_surface = pygame.display.get_surface()
 
@@ -19,6 +21,8 @@ class CameraGroup(pygame.sprite.Group):
             self.cam_left, self.cam_top, self.cam_width, self.cam_height)
 
     def custom_draw(self, player):
+        '''Defines a custom draw method to move camera with player
+        '''
 
         # getting the camera position
         if player.rect.left < self.camera_rect.left:

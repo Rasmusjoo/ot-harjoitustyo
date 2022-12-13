@@ -1,0 +1,13 @@
+import pygame
+import unittest
+from sprites.star import Star
+
+
+class TestStar(unittest.TestCase):
+    def setUp(self):
+        pygame.display.set_mode((100, 100))
+        testgroup = pygame.sprite.Group()
+        self.star = Star((0, 0), [testgroup])
+
+    def test_star_created_properly(self):
+        self.assertNotEqual(self.star, None)

@@ -16,13 +16,13 @@ On mahdollista, että myöhemmin lisätään mahdollisuus kahden pelaajan peliin
 - Viholliseen osuminen johtaa elämän menettämiseen _tehty_
 - Palkinnon kerääminen antaa pisteitä _tehty_
 - Kerätyt pisteet näkyvät lopussa _tehty_
-- Mahdollisuus lopettaa peli voittoon
+- Mahdollisuus lopettaa peli voittoon _tehty_
 
 ## Jatkokehitysideoita
 
 Perusversiota tullaan täydentämään ajan salliessa esim. seuraavilla toiminnallisuuksilla:
 
-- Tulosten tallentaminen
+- Tulosten tallentaminen _tehty_
 - Nimikkeen luominen listaa varten
 - Parhaiden pelaajien pisteiden näyttäminen pelin alussa tai lopussa
 - vaikeustason valinta

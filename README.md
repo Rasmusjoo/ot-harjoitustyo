@@ -1,5 +1,5 @@
 # Tasohyppelypeli
-Sovelluksessa käyttäjä voi liikkua kartalla väistellen esteitä ja vihollisia klassisen tasohyppelypelin tyyliin. Sovellus on yksinpeli. Pelissä pelaajalla on kolme elämää joita hän voi menettää kohdatessaan vihollisia. Vihollisia ei ainakaan vielä tässä vaiheessa pysty tuhoamaan. Keräämällä kolikoita pelaaja saa pisteitä.
+Sovelluksessa käyttäjä voi liikkua kartalla väistellen esteitä ja vihollisia klassisen tasohyppelypelin tyyliin. Sovellus on yksinpeli. Pelissä pelaajalla on kolme elämää joita hän voi menettää kohdatessaan vihollisia. Vihollisia ei ainakaan vielä tässä vaiheessa pysty tuhoamaan. Keräämällä kolikoita pelaaja saa pisteitä. Taso läpäistään keräämällä sen lopussa oleva tähti.
 
 ## Huomio Python-versiosta
 Sovellus on suunniteltu Python 3.8 järjestelmälle ja sitä uudemmille versioille. Testaamiseen on käytetty Pythonin versiota 3.10.6. Etenkin vanhempia versioita käyttäessä voi ilmetä ongelmia.
@@ -18,6 +18,8 @@ Sovellus on suunniteltu Python 3.8 järjestelmälle ja sitä uudemmille versioil
 Linkki ensimmäiseen julkaisuun löytyy alta.
 
 [Julkaisu 1](https://github.com/Rasmusjoo/ot-harjoitustyo/releases/tag/viikko5)
+
+[Julkaisu 2](https://github.com/Rasmusjoo/ot-harjoitustyo/releases/tag/viikko6)
 
 ## Asennus
 Asenna riippuvuudet komennolla:

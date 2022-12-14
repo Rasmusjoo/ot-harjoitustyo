@@ -14,6 +14,8 @@ Sovellus on suunniteltu Python 3.8 järjestelmälle ja sitä uudemmille versioil
 
 [Arkkitehtuurikuvaus](platformer/dokumentaatio/arkkitehtuuri.md)
 
+[Käyttöohje](platformer/dokumentaatio/kaytto-ohje.md)
+
 ## Julkaisut
 Linkki ensimmäiseen julkaisuun löytyy alta.
 

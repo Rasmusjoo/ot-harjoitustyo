@@ -11,8 +11,11 @@ classDiagram
     class Assets{-pictures}
 
     class Sprites
+    
+    class UI
 
 ```
+HUOM sovelluslogiikka ei tällä hetkellä ole jaoteltuna kansioihin. Näin ollen se ei näy pakkausrakenteessa.
 
 ## Sovelluslogiikka
 
@@ -45,8 +48,8 @@ alt painallus oikea tai vasen nuolinäppäin
 G->>+L:siirrä hahmoa sivusuunnassa
 L->>-G:hahmo siirtyy haluttuun suuntaan
 else painallus SPACE tai ylös
-G->>+L:jump() tai superjump()
-L->>-G:hahmo hyppää
+G->>+L:jump(korkeus)
+L->>-G:hahmo hyppää halutun korkeuden
 end
 
 

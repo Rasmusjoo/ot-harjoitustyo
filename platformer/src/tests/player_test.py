@@ -22,7 +22,7 @@ class TestPlayer(unittest.TestCase):
         self.player.direction.y = 10
         self.player.update()
         statuses.append(self.player.status)
-        
+
         self.player.direction.y = 0
         self.player.direction.x = 10
         self.player.update()

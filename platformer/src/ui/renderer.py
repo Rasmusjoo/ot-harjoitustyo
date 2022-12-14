@@ -10,6 +10,7 @@ class Renderer:
         level: Level class object to draw
         screen: Screen to draw on
     '''
+
     def __init__(self, level, screen):
         '''Classes constructor
 

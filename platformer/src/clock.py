@@ -4,6 +4,7 @@ import pygame
 class Clock:
     '''Clock for the game
     '''
+
     def __init__(self):
         '''Classes constructor
         '''

@@ -67,3 +67,7 @@
 -Luotu peliin voittomekaniikka
 
 -Luotu koodiin docstringejä
+
+## Viikko 7
+
+-Lisätty uusia vihollisia

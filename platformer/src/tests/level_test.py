@@ -7,7 +7,7 @@ from settings import WINDOW_WIDTH, WINDOW_HIGHT
 class TestLevel(unittest.TestCase):
     def setUp(self):
         pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HIGHT))
-        self.level = Level("level_test")
+        self.level = Level()
         self.level.setup_level(self.level.level_data)
 
     def test_level_created_properly(self):

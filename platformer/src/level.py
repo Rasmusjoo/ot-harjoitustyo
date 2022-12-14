@@ -7,18 +7,22 @@ from sprites.tiles import Tile
 from sprites.cloud import Cloud
 from sprites.coin import Coin
 from sprites.star import Star
+from sprites.ghost import Ghost
 from settings import TILE_SIZE, WINDOW_HIGHT
 from ui.camera import CameraGroup
 from support import load_level
 
 
 class Level:
-    def __init__(self, levelmap):
+    def __init__(self, levelmap=None):
         '''Classes constructor
 
         Args:
-            levelmap: name of the levels file
+            levelmap: number of the level
         '''
+
+        if not levelmap:
+            levelmap = "test"
 
         # sprite group setup
         self.visible_sprites = CameraGroup()
@@ -32,8 +36,7 @@ class Level:
         self.player = None
 
         # level setup
-        level_data = load_level(levelmap)
-        self.level_data = level_data
+        self.level_data = load_level(levelmap)
         self.setup_level(self.level_data)
 
         self.starting_pos = (0, 0)
@@ -41,12 +44,15 @@ class Level:
         self.points = 0
         self.level_complete = False
 
-    def setup_level(self, layout):
+    def setup_level(self, layout=None):
         '''Build the level according to the layout
 
         Args:
             layout: The level data of given level
         '''
+
+        if not layout:
+            layout = self.level_data
 
         for row_index, row in enumerate(layout):
             for col_index, cell in enumerate(row):
@@ -69,6 +75,9 @@ class Level:
                 if cell == "R":
                     Robot((pos_x, pos_y), [
                           self.visible_sprites, self.active_sprites, self.enemies, self.robots])
+                if cell == "G":
+                    Ghost((pos_x, pos_y), [
+                          self.visible_sprites, self.active_sprites, self.enemies])
                 if cell == "C":
                     Coin((pos_x, pos_y), [self.visible_sprites, self.coins])
                 if cell == "S":
@@ -96,34 +105,34 @@ class Level:
         return [sprite for sprite in self.collision_sprites
                 if sprite.rect.collidepoint(collisionpoint)]
 
-    def robot_horizontal_movement_collision(self):
+    def enemy_horizontal_movement_collision(self):
         '''Checks for horizontal collisions for robots.
         Robot changes direction when collision would happen.
         '''
-        for robot in self.robots.sprites():
-            right_gap = robot.rect.bottomright + vector(1, 1)
-            right_block = robot.rect.midright + vector(1, 0)
-            left_gap = robot.rect.bottomleft + vector(-1, 1)
-            left_block = robot.rect.midleft + vector(-1, 0)
+        for enemy in self.enemies.sprites():
+            right_gap = enemy.rect.bottomright + vector(1, 1)
+            right_block = enemy.rect.midright + vector(1, 0)
+            left_gap = enemy.rect.bottomleft + vector(-1, 1)
+            left_block = enemy.rect.midleft + vector(-1, 0)
 
-            if robot.direction.x > 0:  # moving right
+            if enemy.direction.x > 0:  # moving right
                 # check floor collision
                 floor_sprites = self.horizontal_collision_check(right_gap)
                 # check wall collision
                 wall_sprites = self.horizontal_collision_check(right_block)
                 if wall_sprites or not floor_sprites:
-                    robot.direction.x *= -1
+                    enemy.direction.x *= -1
 
-            if robot.direction.x < 0:  # moving left
+            if enemy.direction.x < 0:  # moving left
                 # check floor collision
                 floor_sprites = self.horizontal_collision_check(left_gap)
                 # check wall collision
                 wall_sprites = self.horizontal_collision_check(left_block)
                 if wall_sprites or not floor_sprites:
-                    robot.direction.x *= -1
+                    enemy.direction.x *= -1
 
             speed = 4
-            robot.rect.x += robot.direction.x * speed
+            enemy.rect.x += enemy.direction.x * speed
 
     def apply_gravity(self, sprite):
         '''Increases the sprites direction.y attribute making it fall
@@ -217,4 +226,4 @@ class Level:
         self.player_falls_too_far()
 
         # Robot
-        self.robot_horizontal_movement_collision()
+        self.enemy_horizontal_movement_collision()

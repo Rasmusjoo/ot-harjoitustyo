@@ -121,6 +121,14 @@
 
 - käytetty aika noin viisi tuntia
 
+### 14.12
+
+- luotu lisää vihollisia
+
+- Parannettu tason valintaa
+
+- käytetty aika noin kaksi tuntia
+
 ## Yhteensä tunteja
 
 - Yhteensä 54 tuntia

@@ -14,4 +14,3 @@ class TestSupport(unittest.TestCase):
         scores = fetch_scores()
         score_list = [scores[-3], scores[-2], scores[-1]]
         self.assertEqual(points, score_list)
-        

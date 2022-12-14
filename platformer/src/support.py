@@ -30,7 +30,7 @@ def load_level(levelmap):
 
     '''
     level_data = []
-    file = os.path.join(dirname, "data", "level maps", levelmap)
+    file = os.path.join(dirname, "data", "level maps", f"level_{levelmap}")
     with open(file, "r", encoding="utf-8") as file_open:
         lines = file_open.readlines()
         for line in lines:

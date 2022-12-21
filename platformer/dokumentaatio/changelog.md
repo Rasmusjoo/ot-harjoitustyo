@@ -71,3 +71,7 @@
 ## Viikko 7
 
 -Lisätty uusia vihollisia
+
+-Parannettu rakennetta ja metodeja
+
+-Vähennetty toisteisuutta

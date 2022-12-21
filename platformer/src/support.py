@@ -30,7 +30,7 @@ def load_level(levelmap):
 
     '''
     level_data = []
-    file = os.path.join(dirname, "data", "level maps", f"level_{levelmap}")
+    file = os.path.join(dirname, "data", "levels", f"level_{levelmap}")
     with open(file, "r", encoding="utf-8") as file_open:
         lines = file_open.readlines()
         for line in lines:
@@ -39,29 +39,70 @@ def load_level(levelmap):
     return level_data
 
 
-def save_score(points):
-    '''Saves the games score to a file
+def save_score(points, level=None, file=None):
+    '''Saves the game's score to a file
 
     Args:
         points: Amount of points gained in the game.
+        level (optional): The level the player was playing when they achieved the score.
+        file (optional): The name of the file to save the score to.
 
     '''
-    file = os.path.join(dirname, "data", "scores", "scores.txt")
-    with open(file, "a", encoding="utf-8") as file_open:
-        file_open.write(f"{points}\n")
+    if not file:
+        file = "scores.txt"
+    if not level:
+        level = "level_1"
+    file_path = os.path.join(dirname, "data", "scores", level, file)
+
+    # Handle errors when opening or writing to the file
+    try:
+        with open(file_path, "a", encoding="utf-8") as score_file:
+            score_file.write(f"{points}\n")
+    except IOError as error:
+        print(f"Error saving score: {error}")
 
 
-def fetch_scores():
-    '''Reads sccores from a file and places them in a list
+def fetch_scores(level=None, file=None):
+    '''Reads scores from a file and returns them as a list
+
+    Args:
+        level (optional): The level to read the scores from.
+        file (optional): The name of the file to read the scores from.
 
     Returns:
-        scores: A list of scores from previous games
+        scores: A list of scores from previous games.
 
     '''
+    if not file:
+        file = "scores.txt"
+    if not level:
+        level = "level_1"
     scores = []
-    file = os.path.join(dirname, "data", "scores", "scores.txt")
-    with open(file, "r", encoding="utf-8") as file_open:
-        lines = file_open.readlines()
-        for line in lines:
-            scores.append(int(line[:-1]))
+    file_path = os.path.join(dirname, "data", "scores", level, file)
+
+    # Handle errors when opening or reading from the file
+    try:
+        with open(file_path, "r", encoding="utf-8") as score_file:
+            for line in score_file:
+                scores.append(int(line))
+    except IOError as error:
+        print(f"Error fetching scores: {error}")
+        scores = []
+
     return scores
+
+
+def kill_all_sprites(group):
+    """Removes all sprites from the specified group.
+
+    Args:
+        group: The sprite group from which to remove sprites.
+
+    Returns:
+        None
+    """
+    group.empty()
+
+
+if __name__ == "__main__":
+    pass

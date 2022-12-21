@@ -1,13 +1,8 @@
 import pygame
 from pygame.math import Vector2 as vector
 from sprites.player import Player
-from sprites.robot import Robot
-from sprites.zombie import Zombie
-from sprites.tiles import Tile
-from sprites.cloud import Cloud
-from sprites.coin import Coin
-from sprites.star import Star
-from sprites.ghost import Ghost
+from sprites.tiles import Star, Coin, Cloud, TerrainTile
+from sprites.enemies import Robot, Zombie, Plane
 from settings import TILE_SIZE, WINDOW_HIGHT
 from ui.camera import CameraGroup
 from support import load_level
@@ -22,7 +17,9 @@ class Level:
         '''
 
         if not levelmap:
-            levelmap = "test"
+            self.levelmap = "test"
+        else:
+            self.levelmap = levelmap
 
         # sprite group setup
         self.visible_sprites = CameraGroup()
@@ -36,7 +33,7 @@ class Level:
         self.player = None
 
         # level setup
-        self.level_data = load_level(levelmap)
+        self.level_data = load_level(self.levelmap)
         self.setup_level(self.level_data)
 
         self.starting_pos = (0, 0)
@@ -58,43 +55,108 @@ class Level:
             for col_index, cell in enumerate(row):
                 pos_x = col_index * TILE_SIZE
                 pos_y = row_index * TILE_SIZE
+                pos = (pos_x, pos_y)
 
                 if cell == "X":
-                    Tile((pos_x, pos_y), TILE_SIZE, [
-                         self.visible_sprites, self.collision_sprites])
-                if cell == "W":
-                    Cloud((pos_x, pos_y), [
-                        self.visible_sprites, self.collision_sprites])
-                if cell == "P":
-                    self.starting_pos = (pos_x, pos_y)
-                    self.player = Player(
-                        (pos_x, pos_y), [self.visible_sprites, self.active_sprites])
-                if cell == "Z":
-                    Zombie((pos_x, pos_y), [
-                           self.visible_sprites, self.active_sprites, self.enemies])
-                if cell == "R":
-                    Robot((pos_x, pos_y), [
-                          self.visible_sprites, self.active_sprites, self.enemies, self.robots])
-                if cell == "G":
-                    Ghost((pos_x, pos_y), [
-                          self.visible_sprites, self.active_sprites, self.enemies])
-                if cell == "C":
-                    Coin((pos_x, pos_y), [self.visible_sprites, self.coins])
-                if cell == "S":
-                    Star((pos_x, pos_y), [self.visible_sprites, self.stars])
+                    self._add_terrain_tile(pos, "ground")
+                elif cell == "G":
+                    self._add_terrain_tile(pos, "grass")
+                elif cell == "W":
+                    self._add_cloud(pos)
+                elif cell == "P":
+                    self._add_player(pos)
+                elif cell == "Z":
+                    self._add_zombie(pos)
+                elif cell == "R":
+                    self._add_robot(pos)
+                elif cell == "B":
+                    self._add_plane(pos)
+                elif cell == "C":
+                    self._add_coin(pos)
+                elif cell == "S":
+                    self._add_star(pos)
+
+    def _add_terrain_tile(self, pos, terrain_type):
+        TerrainTile(pos, TILE_SIZE, [
+                    self.visible_sprites, self.collision_sprites], terrain_type)
+
+    def _add_cloud(self, pos):
+        Cloud(pos, [self.visible_sprites, self.collision_sprites])
+
+    def _add_player(self, pos):
+        self.starting_pos = pos
+        self.player = Player(pos, [self.visible_sprites, self.active_sprites])
+
+    def _add_zombie(self, pos):
+        Zombie(pos, [self.visible_sprites, self.active_sprites, self.enemies])
+
+    def _add_robot(self, pos):
+        Robot(pos, [self.visible_sprites,
+              self.active_sprites, self.enemies, self.robots])
+
+    def _add_plane(self, pos):
+        Plane(pos, [self.visible_sprites, self.active_sprites, self.enemies])
+
+    def _add_coin(self, pos):
+        Coin(pos, [self.visible_sprites, self.coins])
+
+    def _add_star(self, pos):
+        Star(pos, [self.visible_sprites, self.stars])
 
     def player_horizontal_movement_collision(self):
-        '''Moves the player horizontally and checks whether something is in their way.
-        '''
         speed = 8
         player = self.player
         player.rect.x += player.direction.x * speed
-        for sprite in self.collision_sprites.sprites():
+        for sprite in self.collision_sprites:
             if sprite.rect.colliderect(player.rect):
-                if player.direction.x < 0:
-                    player.rect.left = sprite.rect.right
-                elif player.direction.x > 0:
-                    player.rect.right = sprite.rect.left
+                player.rect.x -= player.direction.x * speed
+
+    def handle_player_movement_and_collision(self, player_character,
+    floor_sprites, collision_sprites):
+        """Handles movement and collision detection for the player character.
+
+        Args:
+            player_character: The player character object.
+            floor_sprites: A group of sprites representing
+            the floors or platforms in the game.
+            collision_sprites: A group of sprites representing
+            the objects that the player character can collide with.
+
+        Returns:
+            None
+        """
+        speed = 8
+        # Apply gravity to the player character
+        self.apply_gravity(player_character)
+
+        # Move the player character horizontally in
+        # the direction specified by their movement direction
+        player_character.rect.x += player_character.direction.x * speed
+
+        # Check for collision with floor or platform sprites
+        floor_collision = False
+        for sprite in floor_sprites.sprites():
+            if sprite.rect.colliderect(player_character.rect):
+                floor_collision = True
+                break
+            if floor_collision:
+                if player_character.direction.y > 0:
+                    # Player is falling and collides with the top of a sprite
+                    player_character.rect.bottom = sprite.rect.top
+                    player_character.direction.y = 0
+                    player_character.on_floor = True
+                elif player_character.direction.y < 0:
+                    # Player is jumping and collides with the bottom of a sprite
+                    player_character.rect.top = sprite.rect.bottom
+                    player_character.direction.y = 0
+            else:
+                player_character.on_floor = False
+
+        # Check for collision with collision sprites
+        for sprite in collision_sprites.sprites():
+            if sprite.rect.colliderect(player_character.rect):
+                # Reverse the horizontal movement if a collision is detected
+                player_character.rect.x -= player_character.horizontal_movement_direction * speed
 
     def horizontal_collision_check(self, collisionpoint):
         '''Checks for sprites collision with a collision sprite in a given location.
@@ -106,30 +168,21 @@ class Level:
                 if sprite.rect.collidepoint(collisionpoint)]
 
     def enemy_horizontal_movement_collision(self):
-        '''Checks for horizontal collisions for robots.
-        Robot changes direction when collision would happen.
-        '''
         for enemy in self.enemies.sprites():
             right_gap = enemy.rect.bottomright + vector(1, 1)
             right_block = enemy.rect.midright + vector(1, 0)
             left_gap = enemy.rect.bottomleft + vector(-1, 1)
             left_block = enemy.rect.midleft + vector(-1, 0)
 
-            if enemy.direction.x > 0:  # moving right
-                # check floor collision
-                floor_sprites = self.horizontal_collision_check(right_gap)
-                # check wall collision
-                wall_sprites = self.horizontal_collision_check(right_block)
-                if wall_sprites or not floor_sprites:
-                    enemy.direction.x *= -1
+            floor_sprites = self.horizontal_collision_check(right_gap)
+            wall_sprites = self.horizontal_collision_check(right_block)
+            if wall_sprites or not floor_sprites:
+                enemy.direction.x *= -1
 
-            if enemy.direction.x < 0:  # moving left
-                # check floor collision
-                floor_sprites = self.horizontal_collision_check(left_gap)
-                # check wall collision
-                wall_sprites = self.horizontal_collision_check(left_block)
-                if wall_sprites or not floor_sprites:
-                    enemy.direction.x *= -1
+            floor_sprites = self.horizontal_collision_check(left_gap)
+            wall_sprites = self.horizontal_collision_check(left_block)
+            if wall_sprites or not floor_sprites:
+                enemy.direction.x *= -1
 
             speed = 4
             enemy.rect.x += enemy.direction.x * speed
@@ -159,21 +212,30 @@ class Level:
             if player.on_floor and player.direction.y != 0:
                 player.on_floor = False
 
-    def player_dies(self):
-        '''Kills the player sprite and creates another
+    def handle_player_death(self):
+        '''Resets the player and takes away one life
         '''
-        player = self.player
-        player.kill()
-        self.player = Player(
-            self.starting_pos, [self.visible_sprites, self.active_sprites])
+        # Set the player character's position to the starting position
+        self.player.rect.x, self.player.rect.y = self.starting_pos
+
+        # Reset player character attributes
+        self.player.velocity = pygame.math.Vector2(0, 0)
+        self.player.direction = pygame.math.Vector2(0, 0)
         self.lives -= 1
 
-    def player_falls_too_far(self):
-        '''Kills the player sprite if it falls too far.
-        '''
-        player = self.player
-        if player.rect.y > WINDOW_HIGHT:
-            self.player_dies()
+    def check_for_player_fallen_too_far(self, player_character, game_window_height):
+        """Checks if the player character has fallen too far
+        and triggers a death event if they have.
+
+        Args:
+            player_character: The player character object.
+            game_window_height: The height of the game window.
+
+        Returns:
+            None
+        """
+        if player_character.rect.y > game_window_height:
+            self.handle_player_death()
 
     def player_hits_an_enemy(self):
         '''Kills the player sprite if they collide with an enemy.
@@ -182,27 +244,29 @@ class Level:
         enemy_collision = pygame.sprite.spritecollide(
             player, self.enemies, False, pygame.sprite.collide_mask)
         if enemy_collision:
-            self.player_dies()
+            self.handle_player_death()
 
-    def player_collects_a_coin(self):
-        '''Destroys the coin and adds one point for the player
-        if the player collides with a coin.
-        '''
-        player = self.player
-        coin_collision = pygame.sprite.spritecollide(
-            player, self.coins, True, pygame.sprite.collide_mask)
-        if coin_collision:
-            self.points += 1
+    def handle_player_collecting_item(self, player_character, item_sprites, item_type):
+        """Handles the player character collecting an item.
 
-    def player_collects_a_star(self):
-        '''Destroys the star and marks the level as complete
-        when the player collides with a star
-        '''
-        player = self.player
-        star_collision = pygame.sprite.spritecollide(
-            player, self.stars, True, pygame.sprite.collide_mask)
-        if star_collision:
-            self.level_complete = True
+        Args:
+            player_character: The player character object.
+            item_sprites: A group of sprites representing the items in the game.
+            item_type: The type of item being collected (e.g. 'coin', 'star').
+
+        Returns:
+            None
+        """
+        # Check for collision between player character and item sprites
+        item_collision = pygame.sprite.spritecollide(
+            player_character, item_sprites, True, pygame.sprite.collide_mask)
+        if item_collision:
+            if item_type == 'coin':
+                # Increment player score and destroy the coin sprite
+                self.points += 1
+            elif item_type == 'star':
+                # Mark the level as complete and destroy the star sprite
+                self.level_complete = True
 
     def run(self):
         '''Updates the level. Does the checks.
@@ -211,10 +275,10 @@ class Level:
         self.active_sprites.update()
 
         # Coin check
-        self.player_collects_a_coin()
+        self.handle_player_collecting_item(self.player, self.coins, "coin")
 
         # Star check
-        self.player_collects_a_star()
+        self.handle_player_collecting_item(self.player, self.stars, "star")
 
         # Enemy check
         self.player_hits_an_enemy()
@@ -223,7 +287,13 @@ class Level:
         self.player_horizontal_movement_collision()
         self.player_vertical_movement_collisison()
         self.player.update()
-        self.player_falls_too_far()
+        self.check_for_player_fallen_too_far(self.player, WINDOW_HIGHT)
 
-        # Robot
+        # Enemies
         self.enemy_horizontal_movement_collision()
+        for enemy in self.enemies:
+            enemy.update()
+
+
+if __name__ == "__main__":
+    pass

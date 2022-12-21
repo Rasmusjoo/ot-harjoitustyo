@@ -13,6 +13,7 @@ class Player(sprite.Sprite):
         self.mask = pygame.mask.from_surface(self.image)
         self.rect = self.image.get_rect(topleft=pos)
         self.on_floor = False
+        self.double_jump_used = False
         self.status = "idle"
         self.orientation = "right"
 

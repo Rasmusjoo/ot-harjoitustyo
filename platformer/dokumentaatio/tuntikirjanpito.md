@@ -129,6 +129,34 @@
 
 - käytetty aika noin kaksi tuntia
 
+### 15.12
+
+- Aloitettu levelin luomisen uudistaminen
+
+- Tavoitteena saada ladattua taso Tiled sovelluksesta
+
+- Taso luotu Tiled sovelluksella tätä tarkkoitusta varten
+
+- Käytetty noin neljä tuntia
+
+### 16.12
+
+- Parannettu spriteja
+
+- Vähennetty toisteisuutta
+
+- Käytetty noin kaksi tuntia
+
+### 21.12
+
+- Vähennetty toisteisuutta
+
+- Parannettu rakennetta
+
+- Parannettu metodeja
+
+- Käytetty noin viisi tuntia
+
 ## Yhteensä tunteja
 
-- Yhteensä 54 tuntia
+- Yhteensä 65 tuntia

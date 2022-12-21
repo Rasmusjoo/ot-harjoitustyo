@@ -58,28 +58,24 @@ class Renderer:
         '''Draws the end screen
         '''
         scores = fetch_scores()
-
         self.screen.fill(END_COLOR)
-        font1 = pygame.font.SysFont(FONT, 150)
-        font2 = pygame.font.SysFont(FONT, 50)
-        font3 = pygame.font.SysFont(FONT, 100)
 
-        game_over = font1.render(
-            "GAME OVER", True, (FONT_COLOR))
-        game_over_rect = game_over.get_rect(
-            center=(WINDOW_WIDTH/2, 100))
+        font1 = pygame.font.SysFont(FONT, 150)
+        game_over = font1.render("GAME OVER", True, (FONT_COLOR))
+        game_over_rect = game_over.get_rect(center=(WINDOW_WIDTH/2, 100))
+
+        font2 = pygame.font.SysFont(FONT, 50)
         points = font2.render(
             f"Points gained:{self.level.points}", True, (FONT_COLOR))
-        points_rect = points.get_rect(
-            center=(WINDOW_WIDTH/2, 300))
-        restart = font3.render(
-            "Press S to restart", True, (FONT_COLOR))
-        restart_rect = restart.get_rect(
-            center=(WINDOW_WIDTH/2, WINDOW_HIGHT/2 + 100))
+        points_rect = points.get_rect(center=(WINDOW_WIDTH/2, 300))
         score_max = font2.render(
             f"Best score:{max(scores)}", True, (FONT_COLOR))
-        score_max_rect = score_max.get_rect(
-            center=(WINDOW_WIDTH/2, 400))
+        score_max_rect = score_max.get_rect(center=(WINDOW_WIDTH/2, 400))
+
+        font3 = pygame.font.SysFont(FONT, 100)
+        restart = font3.render("Press S to restart", True, (FONT_COLOR))
+        restart_rect = restart.get_rect(
+            center=(WINDOW_WIDTH/2, WINDOW_HIGHT/2 + 100))
 
         self.screen.blit(game_over, game_over_rect)
         self.screen.blit(points, points_rect)
@@ -89,31 +85,27 @@ class Renderer:
         pygame.display.update()
 
     def victory(self):
-        '''Draws the end screen
+        '''Draws the victory screen
         '''
         scores = fetch_scores()
-
         self.screen.fill("green")
-        font1 = pygame.font.SysFont(FONT, 150)
-        font2 = pygame.font.SysFont(FONT, 50)
-        font3 = pygame.font.SysFont(FONT, 100)
 
-        game_over = font1.render(
-            "LEVEL COMPLETE", True, (FONT_COLOR))
-        game_over_rect = game_over.get_rect(
-            center=(WINDOW_WIDTH/2, 100))
+        font1 = pygame.font.SysFont(FONT, 150)
+        game_over = font1.render("LEVEL COMPLETE", True, (FONT_COLOR))
+        game_over_rect = game_over.get_rect(center=(WINDOW_WIDTH/2, 100))
+
+        font2 = pygame.font.SysFont(FONT, 50)
         points = font2.render(
             f"Points gained:{self.level.points}", True, (FONT_COLOR))
-        points_rect = points.get_rect(
-            center=(WINDOW_WIDTH/2, 300))
-        restart = font3.render(
-            "Press S to restart", True, (FONT_COLOR))
-        restart_rect = restart.get_rect(
-            center=(WINDOW_WIDTH/2, WINDOW_HIGHT/2 + 100))
+        points_rect = points.get_rect(center=(WINDOW_WIDTH/2, 300))
         score_max = font2.render(
             f"Best score:{max(scores)}", True, (FONT_COLOR))
-        score_max_rect = score_max.get_rect(
-            center=(WINDOW_WIDTH/2, 400))
+        score_max_rect = score_max.get_rect(center=(WINDOW_WIDTH/2, 400))
+
+        font3 = pygame.font.SysFont(FONT, 100)
+        restart = font3.render("Press S to restart", True, (FONT_COLOR))
+        restart_rect = restart.get_rect(
+            center=(WINDOW_WIDTH/2, WINDOW_HIGHT/2 + 100))
 
         self.screen.blit(game_over, game_over_rect)
         self.screen.blit(points, points_rect)

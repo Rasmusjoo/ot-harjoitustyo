@@ -56,7 +56,7 @@ class TestGameloop(unittest.TestCase):
         test_event_queue = StubEventQueue(events)
         testgameloop = Gameloop(
             testlevel, self.testrenderer, self.testclock, test_event_queue)
-        testlevel.lives = 0
+        testgameloop.level.lives = 0
         testgameloop.handle_events()
         self.assertEqual(testgameloop.game_state, 3)
 

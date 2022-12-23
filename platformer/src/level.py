@@ -1,5 +1,4 @@
 import pygame
-from pygame.math import Vector2 as vector
 from spritetypes import SpriteType
 from sprites.player import Player
 from sprites.tiles import Star, Coin, Cloud, TerrainTile
@@ -88,20 +87,22 @@ class Level:
     def _add_player(self, pos):
         self.starting_pos = pos
         self.player = Player(
-            pos, [self.sprites[SpriteType.VISIBLE], self.sprites[SpriteType.ACTIVE]])
+            pos, [self.sprites[SpriteType.VISIBLE],
+                  self.sprites[SpriteType.ACTIVE]],
+            self.sprites[SpriteType.COLLISION])
 
     def _add_zombie(self, pos):
         Zombie(pos, [self.sprites[SpriteType.VISIBLE], self.sprites[SpriteType.ACTIVE],
-               self.sprites[SpriteType.ENEMIES]])
+               self.sprites[SpriteType.ENEMIES]], self.sprites[SpriteType.COLLISION])
 
     def _add_robot(self, pos):
         Robot(pos, [self.sprites[SpriteType.VISIBLE],
               self.sprites[SpriteType.ACTIVE], self.sprites[SpriteType.ENEMIES],
-              self.sprites[SpriteType.ROBOTS]])
+              self.sprites[SpriteType.ROBOTS]], self.sprites[SpriteType.COLLISION])
 
     def _add_plane(self, pos):
         Plane(pos, [self.sprites[SpriteType.VISIBLE], self.sprites[SpriteType.ACTIVE],
-              self.sprites[SpriteType.ENEMIES]])
+              self.sprites[SpriteType.ENEMIES]], self.sprites[SpriteType.COLLISION])
 
     def _add_coin(self, pos):
         Coin(pos, [self.sprites[SpriteType.VISIBLE],
@@ -111,72 +112,9 @@ class Level:
         Star(pos, [self.sprites[SpriteType.VISIBLE],
              self.sprites[SpriteType.STARS]])
 
-    def player_horizontal_movement_collision(self):
-        """Updates the player's position based on its horizontal
-        velocity and handles collisions with collision sprites.
-        """
-        speed = 8
-        player = self.player
-        player.rect.x += player.direction.x * speed
-
-        for sprite in self.sprites[SpriteType.COLLISION]:
-            if sprite.rect.colliderect(player.rect):
-                player.rect.x -= player.direction.x * speed
-
-    def horizontal_collision_check(self, collisionpoint):
-        '''Checks for sprites collision with a collision sprite in a given location.
-
-        Args:
-            collisionpoint: point where the collision is checked
-        '''
-        return [sprite for sprite in self.sprites[SpriteType.COLLISION]
-                if sprite.rect.collidepoint(collisionpoint)]
-
     def enemy_horizontal_movement_collision(self):
         for enemy in self.sprites[SpriteType.ENEMIES].sprites():
-            right_gap = enemy.rect.bottomright + vector(1, 1)
-            right_block = enemy.rect.midright + vector(1, 0)
-            left_gap = enemy.rect.bottomleft + vector(-1, 1)
-            left_block = enemy.rect.midleft + vector(-1, 0)
-
-            floor_sprites = self.horizontal_collision_check(right_gap)
-            wall_sprites = self.horizontal_collision_check(right_block)
-            if wall_sprites or not floor_sprites:
-                enemy.direction.x *= -1
-
-            floor_sprites = self.horizontal_collision_check(left_gap)
-            wall_sprites = self.horizontal_collision_check(left_block)
-            if wall_sprites or not floor_sprites:
-                enemy.direction.x *= -1
-
-            speed = 4
-            enemy.rect.x += enemy.direction.x * speed
-
-    def apply_gravity(self, sprite):
-        """Applies gravity to the sprite by increasing
-        its vertical velocity and updating its position.
-        """
-        gravity = 0.8
-        sprite.direction.y += gravity
-        sprite.rect.y += sprite.direction.y
-
-    def player_vertical_movement_collisison(self):
-        '''Applys gravity and checks for collision with floor or similiar
-        '''
-        player = self.player
-        self.apply_gravity(player)
-        for sprite in self.sprites[SpriteType.COLLISION].sprites():
-            if sprite.rect.colliderect(player.rect):
-                if player.direction.y > 0:
-                    player.rect.bottom = sprite.rect.top
-                    player.direction.y = 0
-                    player.on_floor = True
-                elif player.direction.y < 0:
-                    player.rect.top = sprite.rect.bottom
-                    player.direction.y = 0
-
-            if player.on_floor and player.direction.y != 0:
-                player.on_floor = False
+            enemy.horizontal_movement_collsion()
 
     def handle_player_death(self, game_window_height):
         """Handles the player's death by checking for a collision with an enemy sprite,
@@ -233,8 +171,6 @@ class Level:
         self.enemy_horizontal_movement_collision()
 
         # Player
-        self.player_horizontal_movement_collision()
-        self.player_vertical_movement_collisison()
         self.handle_player_death(WINDOW_HIGHT)
         self.player.update()
 

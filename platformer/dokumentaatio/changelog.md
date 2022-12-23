@@ -75,3 +75,9 @@
 -Parannettu rakennetta ja metodeja
 
 -Vähennetty toisteisuutta
+
+-Poistettu käyttämättömiä osia
+
+-Lisätty testejä
+
+-Siirretty liikkuminen pois Level luokasta

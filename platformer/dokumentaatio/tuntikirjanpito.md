@@ -169,8 +169,14 @@
 
 - Lisää parannuksia metodeihin ja rakenteeseen
 
-- Käytetty noin kaksi tuntia
+- Siirretty liikkuminen pois Level luokasta
+
+- Pelin läpäisyn jälkenn voi nyt siirtyä uuteen tasoon
+
+- Lisätty testejä
+
+- Käytetty noin 6 tuntia
 
 ## Yhteensä tunteja
 
-- Yhteensä 69 tuntia
+- Yhteensä 73 tuntia

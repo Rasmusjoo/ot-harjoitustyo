@@ -8,6 +8,7 @@ class Tile(pygame.sprite.Sprite):
         super().__init__(groups)
         self.image = image
         self.rect = self.image.get_rect(topleft=pos)
+        self.mask = pygame.mask.from_surface(self.image)
 
 
 class StaticTile(Tile):
@@ -17,8 +18,6 @@ class StaticTile(Tile):
             self.image = surface
         else:
             self.image.fill(TILE_COLOR)
-
-        self.mask = pygame.mask.from_surface(self.image)
 
 
 class TerrainTile(StaticTile):

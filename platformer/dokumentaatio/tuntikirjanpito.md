@@ -157,6 +157,20 @@
 
 - Käytetty noin viisi tuntia
 
+### 22.12
+
+- Parannettu metodeja
+
+- Käytetty noin kaksi tuntia
+
+### 23.12
+
+- Poistettu käyttämättömiä osia koodista
+
+- Lisää parannuksia metodeihin ja rakenteeseen
+
+- Käytetty noin kaksi tuntia
+
 ## Yhteensä tunteja
 
-- Yhteensä 65 tuntia
+- Yhteensä 69 tuntia

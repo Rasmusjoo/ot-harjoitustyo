@@ -3,28 +3,31 @@ from settings import camera_borders
 
 
 class CameraGroup(pygame.sprite.Group):
+    """A group of sprites that move with the player character and are
+    displayed on the screen with an offset based on the camera's position."""
+
+    CAM_LEFT = camera_borders['left']
+    CAM_TOP = camera_borders['top']
+    CAM_RIGHT = camera_borders['right']
+    CAM_BOTTOM = camera_borders['bottom']
+
     def __init__(self):
-        '''Classes constructor
-        '''
+        """Classes constructor."""
         super().__init__()
         self.display_surface = pygame.display.get_surface()
 
-        # camera
-        self.cam_left = camera_borders['left']
-        self.cam_top = camera_borders['top']
+        # Camera dimensions
         self.cam_width = self.display_surface.get_size(
-        )[0] - (self.cam_left + camera_borders['right'])
+        )[0] - (self.CAM_LEFT + self.CAM_RIGHT)
         self.cam_height = self.display_surface.get_size(
-        )[1] - (self.cam_top + camera_borders['bottom'])
-
+        )[1] - (self.CAM_TOP + self.CAM_BOTTOM)
         self.camera_rect = pygame.Rect(
-            self.cam_left, self.cam_top, self.cam_width, self.cam_height)
+            self.CAM_LEFT, self.CAM_TOP, self.cam_width, self.cam_height)
 
     def custom_draw(self, player):
-        '''Defines a custom draw method to move camera with player
-        '''
-
-        # getting the camera position
+        """Move the camera with the player and blit the sprites in the
+        group to the display surface with an offset based on the camera's position."""
+        # Update the camera position based on the player's position
         if player.rect.left < self.camera_rect.left:
             self.camera_rect.left = player.rect.left
         if player.rect.right > self.camera_rect.right:
@@ -34,11 +37,14 @@ class CameraGroup(pygame.sprite.Group):
         if player.rect.bottom > self.camera_rect.bottom:
             self.camera_rect.bottom = player.rect.bottom
 
-        # camera offset
-        offset = pygame.math.Vector2(
-            self.camera_rect.left - camera_borders['left'],
-            self.camera_rect.top - camera_borders['top'])
+        # Calculate the camera offset
+        offset = self.calculate_camera_offset()
 
+        # Blit the sprites in the group to the display surface with the camera offset
         for sprite in self.sprites():
             offset_pos = sprite.rect.topleft - offset
             self.display_surface.blit(sprite.image, offset_pos)
+
+    def calculate_camera_offset(self):
+        """Calculate the offset for the camera based on its position and the camera borders."""
+        return pygame.math.Vector2(self.camera_rect.left - self.CAM_LEFT, self.camera_rect.top - self.CAM_TOP)

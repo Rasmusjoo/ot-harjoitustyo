@@ -2,6 +2,7 @@ import pygame
 from support import save_score, kill_all_sprites
 from level import Level
 from ui.renderer import Renderer
+from spritetypes import SpriteType
 
 
 class Gameloop:
@@ -89,17 +90,19 @@ class Gameloop:
         Returns:
             None
         """
-        kill_all_sprites(game_level.visible_sprites)
+        kill_all_sprites(game_level.sprites[SpriteType.VISIBLE])
         game_level.level_complete = False
         game_level.player_score = 0
         game_level.lives = 3
         game_level.setup_level(game_level.level_data)
         self.game_state = 1
 
-
     def start_next_level(self):
-        kill_all_sprites(self.level.visible_sprites)
-        self.current_level += 1
+        kill_all_sprites(self.level.sprites[SpriteType.VISIBLE])
+        if self.current_level != "test":
+            self.current_level += 1
+            if self.current_level >= 4:
+                self.current_level = "test"
         self.level = Level(self.current_level)
         window = self.renderer.screen
         self.renderer = Renderer(self.level, window)
@@ -136,23 +139,44 @@ class Gameloop:
         sprite.direction.y = jump_speed
 
     def handle_events(self):
+        """Processes events in the event queue and updates the game state as necessary."""
         for event in self.event_queue.get():
             if event.type == pygame.QUIT:
                 return False
 
             if event.type == pygame.KEYDOWN:
-                if self.game_state == 0 and event.key == pygame.K_SPACE:
-                    self.game_state = 1
-                elif self.game_state == 1 and event.key == pygame.K_p:
-                    self.game_state = 2
-                elif self.game_state == 2 and event.key == pygame.K_p:
-                    self.game_state = 1
-                elif self.game_state in (3, 4) and event.key == pygame.K_s:
-                    self.reset_game(self.level)
-                elif self.game_state in (3, 4) and event.key == pygame.K_c:
-                    self.start_next_level()
-                elif self.level.lives <= 0 or event.key == pygame.K_q:
-                    save_score(self.level.points)
-                    self.game_state = 3
+                if self.game_state == 0:
+                    self.handle_start_game_event(event)
+                elif self.game_state == 1:
+                    self.handle_game_event(event)
+                elif self.game_state == 2:
+                    self.handle_pause_event(event)
+                elif self.game_state in (3, 4):
+                    self.handle_end_of_game_event(event)
 
         return True
+
+    def handle_start_game_event(self, event):
+        """Handles a KEYDOWN event in the start game state."""
+        if event.key == pygame.K_SPACE:
+            self.game_state = 1
+
+    def handle_game_event(self, event):
+        """Handles a KEYDOWN event in the game state."""
+        if event.key == pygame.K_p:
+            self.game_state = 2
+        elif event.key == pygame.K_q or self.level.lives <= 0:
+            save_score(self.level.points, self.current_level)
+            self.game_state = 3
+
+    def handle_pause_event(self, event):
+        """Handles a KEYDOWN event in the pause state."""
+        if event.key == pygame.K_p:
+            self.game_state = 1
+
+    def handle_end_of_game_event(self, event):
+        """Handles a KEYDOWN event in the game over state."""
+        if event.key == pygame.K_s:
+            self.reset_game(self.level)
+        elif event.key == pygame.K_c:
+            self.start_next_level()

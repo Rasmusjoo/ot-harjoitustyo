@@ -6,7 +6,7 @@ from sprites.tiles import AnimatedTile
 
 class Robot(AnimatedTile):
     def __init__(self, pos, groups):
-        super().__init__(pos, groups, load_assets("robot", "robot.png"))
+        super().__init__(pos, groups, load_assets("robot", "robot.png")[0])
 
         # robot movement
         self.direction = pygame.math.Vector2(choice((1, -1)), 0)
@@ -14,7 +14,7 @@ class Robot(AnimatedTile):
 
 class Zombie(AnimatedTile):
     def __init__(self, pos, groups):
-        super().__init__(pos, groups, load_assets("zombie", "zombie.png"))
+        super().__init__(pos, groups, load_assets("zombie", "zombie.png")[0])
 
         # zombie movement
         self.direction = pygame.math.Vector2()
@@ -23,7 +23,7 @@ class Zombie(AnimatedTile):
 class Plane(AnimatedTile):
     def __init__(self, pos, groups):
         super().__init__(pos, groups, pygame.transform.rotozoom(
-            load_assets("plane", "plane.png"), 0, 1.8))
+            load_assets("plane", "plane.png")[0], 0, 1.8))
 
         # bee movement
         self.direction = pygame.math.Vector2(choice((1, -1)), 0)
@@ -32,7 +32,7 @@ class Plane(AnimatedTile):
 class Ghost(AnimatedTile):
     def __init__(self, pos, groups):
         super().__init__(pos, groups, pygame.transform.rotozoom(
-            load_assets("ghost", "ghost.png"), 0, 1.8))
+            load_assets("ghost", "ghost.png")[0], 0, 1.8))
 
         # ghost movement
         self.direction = pygame.math.Vector2(choice((1, -1)), 0)

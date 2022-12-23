@@ -3,20 +3,26 @@ import pygame
 dirname = os.path.dirname(__file__)
 
 
-def load_assets(folder, filename):
-    '''Returns wanted image
+def load_assets(folder, *filenames):
+    '''Loads one or more image files from the specified folder.
 
     Args:
-        folder: The folder in which the image is located
-        filename: Name of the imagefile
+        folder: The name of the folder containing the image files.
+        *filenames: One or more image file names to load.
 
     Returns:
-        imagefile
+        A list of image objects.
     '''
-    image = pygame.image.load(
-        os.path.join(dirname, "assets", folder, filename)
-    ).convert_alpha()
-    return image
+    images = []
+    for filename in filenames:
+        try:
+            image = pygame.image.load(
+                os.path.join(dirname, "assets", folder, filename)
+            ).convert_alpha()
+            images.append(image)
+        except pygame.error as error:
+            print(f"Error loading image {filename}: {error}")
+    return images
 
 
 def load_level(levelmap):
@@ -51,8 +57,8 @@ def save_score(points, level=None, file=None):
     if not file:
         file = "scores.txt"
     if not level:
-        level = "level_1"
-    file_path = os.path.join(dirname, "data", "scores", level, file)
+        level = "1"
+    file_path = os.path.join(dirname, "data", "scores", f"level_{level}", file)
 
     # Handle errors when opening or writing to the file
     try:
@@ -76,15 +82,20 @@ def fetch_scores(level=None, file=None):
     if not file:
         file = "scores.txt"
     if not level:
-        level = "level_1"
+        level = "1"
     scores = []
-    file_path = os.path.join(dirname, "data", "scores", level, file)
+    file_path = os.path.join(dirname, "data", "scores", f"level_{level}", file)
 
     # Handle errors when opening or reading from the file
     try:
         with open(file_path, "r", encoding="utf-8") as score_file:
             for line in score_file:
-                scores.append(int(line))
+                try:
+                    score = int(line[:-1])
+                except ValueError:
+                    print(f"Error: invalid score '{line[:-1]}'")
+                    continue
+                scores.append(score)
     except IOError as error:
         print(f"Error fetching scores: {error}")
         scores = []
@@ -105,4 +116,5 @@ def kill_all_sprites(group):
 
 
 if __name__ == "__main__":
-    pass
+    save_score(6)
+    fetch_scores()

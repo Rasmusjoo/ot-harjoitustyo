@@ -4,16 +4,14 @@ from support import load_assets
 
 
 class Player(sprite.Sprite):
-    def __init__(self, pos, groups):
-        super().__init__(groups)
+    def __init__(self, pos, sprite_groups):
+        super().__init__(sprite_groups)
 
         self.assets = self.import_assets()
-
         self.image = self.assets[0]  # idle image
         self.mask = pygame.mask.from_surface(self.image)
         self.rect = self.image.get_rect(topleft=pos)
         self.on_floor = False
-        self.double_jump_used = False
         self.status = "idle"
         self.orientation = "right"
 
@@ -21,51 +19,80 @@ class Player(sprite.Sprite):
         self.direction = pygame.math.Vector2()
 
     def import_assets(self):
-        '''Loads the images for players poses
-        '''
-        folder = "player"
+        """Loads the images for the player's different poses.
 
-        assets = []
+        Returns:
+            A list of images for the player's poses.
+        """
+        filenames = ["player", "adventurer_idle.png", "adventurer_running.png",
+                     "adventurer_jump.png", "adventurer_fall.png"]
 
-        assets.append(load_assets(folder, "adventurer_idle.png"))
-        assets.append(load_assets(folder, "adventurer_running.png"))
-        assets.append(load_assets(folder, "adventurer_jump.png"))
-        assets.append(load_assets(folder, "adventurer_fall.png"))
+        assets = load_assets(*filenames)
 
         return assets
 
-    def get_status(self):
-        '''Sets the status of the player.
-        This allows the right pose to be used.
-        '''
+    def get_jump_status(self):
         if self.direction.y < 0:
-            self.status = "jump"
-        elif self.direction.y > 1:
-            self.status = "fall"
-        else:
-            if self.direction.x != 0:
-                self.status = "run"
-            else:
-                self.status = "idle"
+            return "jump"
+        return None
+
+    def get_fall_status(self):
+        if self.direction.y > 1:
+            return "fall"
+        return None
+
+    def get_run_status(self):
+        if self.direction.x != 0:
+            return "run"
+        return None
+
+    def get_idle_status(self):
+        if self.direction.x == 0:
+            return "idle"
+        return None
+
+    def get_status(self):
+        """Determines the player's status based on their movement.
+
+        Returns:
+            The player's status.
+        """
+        status = self.get_jump_status()
+        if status:
+            return status
+
+        status = self.get_fall_status()
+        if status:
+            return status
+
+        status = self.get_run_status()
+        if status:
+            return status
+
+        return self.get_idle_status()
 
     def animation(self):
-        '''Changes the player pose to match the status.
-        '''
-        if self.status == "jump":
-            self.image = self.assets[2]  # jump image
-        elif self.status == "fall":
-            self.image = self.assets[3]  # fall image
-        elif self.status == "run":
-            self.image = self.assets[1]  # run image
-        else:
-            self.image = self.assets[0]  # idle image
+        """Updates the player's image based on their status.
 
+        The image is flipped horizontally if the player is facing left.
+        """
+        # Map the player's status to the corresponding image in the assets list
+        status_mapping = {
+            "jump": self.assets[2],
+            "fall": self.assets[3],
+            "run": self.assets[1],
+            "idle": self.assets[0]
+        }
+
+        # Set the player's image to the corresponding image based on the status
+        self.image = status_mapping[self.status]
+
+        # Flip the image horizontally if the player is facing left
         if self.orientation == "left":
-            flipped_image = pygame.transform.flip(self.image, True, False)
-            self.image = flipped_image
+            self.image = pygame.transform.flip(self.image, True, False)
 
     def update(self):
         '''Updates the player by calling functions
         '''
-        self.get_status()
+        self.status = self.get_status()
         self.animation()

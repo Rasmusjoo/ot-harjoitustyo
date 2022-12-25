@@ -25,6 +25,8 @@ Linkki ensimmäiseen julkaisuun löytyy alta.
 
 [Julkaisu 2](https://github.com/Rasmusjoo/ot-harjoitustyo/releases/tag/viikko6)
 
+[Loppupalautus](https://github.com/Rasmusjoo/ot-harjoitustyo/releases/tag/viikko7)
+
 ## Asennus
 Asenna riippuvuudet komennolla:
 

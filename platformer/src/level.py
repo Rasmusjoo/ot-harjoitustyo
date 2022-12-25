@@ -56,24 +56,27 @@ class Level:
                 pos_y = row_index * TILE_SIZE
                 pos = (pos_x, pos_y)
 
-                if cell == "X":
-                    self._add_terrain_tile(pos, "ground")
-                elif cell == "G":
-                    self._add_terrain_tile(pos, "grass")
-                elif cell == "W":
-                    self._add_cloud(pos)
-                elif cell == "P":
-                    self._add_player(pos)
-                elif cell == "Z":
-                    self._add_zombie(pos)
-                elif cell == "R":
-                    self._add_robot(pos)
-                elif cell == "B":
-                    self._add_plane(pos)
-                elif cell == "C":
-                    self._add_coin(pos)
-                elif cell == "S":
-                    self._add_star(pos)
+                self._handle_tile_choice(cell, pos)
+
+    def _handle_tile_choice(self, cell, pos):
+        if cell == "X":
+            self._add_terrain_tile(pos, "ground")
+        elif cell == "G":
+            self._add_terrain_tile(pos, "grass")
+        elif cell == "W":
+            self._add_cloud(pos)
+        elif cell == "P":
+            self._add_player(pos)
+        elif cell == "Z":
+            self._add_zombie(pos)
+        elif cell == "R":
+            self._add_robot(pos)
+        elif cell == "B":
+            self._add_plane(pos)
+        elif cell == "C":
+            self._add_coin(pos)
+        elif cell == "S":
+            self._add_star(pos)
 
     def _add_terrain_tile(self, pos, terrain_type):
         TerrainTile(pos, TILE_SIZE, [
@@ -159,6 +162,10 @@ class Level:
     def run(self):
         '''Updates the level. Does the checks.
         '''
+        # Player
+        self.handle_player_death(WINDOW_HIGHT)
+        self.player.update()
+
         # Coin check
         self.handle_player_collecting_item(
             self.player, self.sprites[SpriteType.COINS], "coin")
@@ -169,10 +176,6 @@ class Level:
 
         # Enemies
         self.enemy_horizontal_movement_collision()
-
-        # Player
-        self.handle_player_death(WINDOW_HIGHT)
-        self.player.update()
 
 
 if __name__ == "__main__":

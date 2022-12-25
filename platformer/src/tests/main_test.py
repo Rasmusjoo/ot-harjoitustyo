@@ -18,6 +18,7 @@ class TestMain(unittest.TestCase):
 
     def test_create_game_objects(self):
         # Test that the create_game_objects function creates the correct game objects
+        pygame.init()
         window = create_window()
         level, renderer, clock, event_queue = create_game_objects(window)
         self.assertIsInstance(level, Level)

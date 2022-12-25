@@ -3,6 +3,7 @@ from support import save_score, kill_all_sprites
 from level import Level
 from ui.renderer import Renderer
 from spritetypes import SpriteType
+from gamestate import GameState
 
 
 class Gameloop:
@@ -19,38 +20,38 @@ class Gameloop:
         self.current_level = self.level.levelmap
         self.renderer = renderer
         self.clock = clock
-        self.game_state = 0
+        self.game_state = GameState.INTRO_SCREEN
         self.event_queue = event_queue
         self.player = None
+        self.groups = [self.level.sprites[SpriteType.VISIBLE],
+                       self.level.sprites[SpriteType.COLLISION],
+                       self.level.sprites[SpriteType.ENEMIES],
+                       self.level.sprites[SpriteType.COINS],
+                       self.level.sprites[SpriteType.STARS],
+                       self.level.sprites[SpriteType.COINS],
+                       self.level.sprites[SpriteType.ROBOTS]]
 
     def start(self):
-        '''The core of the gameloop. Handles the gamestates
-        '''
         while True:
             if self.handle_events() is False:
                 break
             self.handle_events()
             if self.level.level_complete is True:
-                self.game_state = 4
-            if self.game_state == 0:
-                self.handle_intro_screen()
+                self.game_state = GameState.VICTORY
 
-            elif self.game_state == 1:
-                self.handle_gameplay()
-
-            elif self.game_state == 2:
-                self.handle_pause_screen()
-
-            elif self.game_state == 4:
-                self.handle_victory()
-
-            else:
-                self.handle_end_screen()
+            # Dictionary to map game states to their corresponding handling methods
+            state_handlers = {
+                GameState.INTRO_SCREEN: self.handle_intro_screen,
+                GameState.GAMEPLAY: self.handle_gameplay,
+                GameState.PAUSE_SCREEN: self.handle_pause_screen,
+                GameState.VICTORY: self.handle_victory,
+                GameState.END_SCREEN: self.handle_end_screen
+            }
+            handler = state_handlers.get(
+                self.game_state, self.handle_end_screen)
+            handler()
 
             self.clock.tick(60)
-
-        if self.game_state == 4:
-            save_score(self.level.points)
 
     def handle_intro_screen(self):
         self.renderer.intro_screen()
@@ -66,20 +67,10 @@ class Gameloop:
 
     def handle_victory(self):
         self.renderer.victory()
-        save_score(self.level.points)
+        save_score(self.level.points, level=self.current_level)
 
     def handle_end_screen(self):
         self.renderer.end_screen()
-
-    def restart(self):
-        '''Resets the game. Returns everything to the state it was in the beginning
-        '''
-        kill_all_sprites(self.level.visible_sprites)
-        self.level.level_complete = False
-        self.level.points = 0
-        self.level.lives = 3
-        self.level.setup_level(self.level.level_data)
-        self.game_state = 1
 
     def reset_game(self, game_level):
         """Resets the game to its initial state.
@@ -90,15 +81,19 @@ class Gameloop:
         Returns:
             None
         """
-        kill_all_sprites(game_level.sprites[SpriteType.VISIBLE])
+
+        kill_all_sprites(self.groups)
         game_level.level_complete = False
-        game_level.player_score = 0
+        game_level.points = 0
         game_level.lives = 3
+        self.game_state = GameState.GAMEPLAY
         game_level.setup_level(game_level.level_data)
-        self.game_state = 1
 
     def start_next_level(self):
-        kill_all_sprites(self.level.sprites[SpriteType.VISIBLE])
+        '''Creates a new level and renderer and removes previous levels sprites
+        '''
+
+        kill_all_sprites(self.groups)
         if self.current_level != "test":
             self.current_level += 1
             if self.current_level >= 4:
@@ -107,26 +102,42 @@ class Gameloop:
         window = self.renderer.screen
         self.renderer = Renderer(self.level, window)
         self.level.setup_level(self.level.level_data)
-        self.game_state = 1
+        self.game_state = GameState.GAMEPLAY
 
     def get_input(self, keys=None):
-        '''Takes the movement commands of the user and moves the player accordingly.
-        '''
-        if not keys:
+        """Processes input from the player and updates the player's movement.
+
+        Args:
+            keys: A list of keys that are currently being pressed. If not
+                provided, the keys will be retrieved using pygame.key.get_pressed().
+
+        Returns:
+            None
+        """
+        if keys is None:
             keys = pygame.key.get_pressed()
 
-        self.player.direction.x = 0
-        if keys[pygame.K_RIGHT]:
-            self.player.direction.x = 1
-            self.player.orientation = "right"
-        elif keys[pygame.K_LEFT]:
-            self.player.direction.x = -1
-            self.player.orientation = "left"
+        # Dictionary mapping keys to player actions
+        key_actions = {
+            pygame.K_RIGHT: (1, "right"),
+            pygame.K_LEFT: (-1, "left"),
+            pygame.K_SPACE: self.jump,
+            pygame.K_UP: self.jump
+        }
 
-        if keys[pygame.K_SPACE] and self.player.on_floor:
-            self.jump(self.player, -20)
-        elif keys[pygame.K_UP] and self.player.on_floor:
-            self.jump(self.player, -30)
+        # Update player's direction and orientation based on key presses
+        self.player.direction.x = 0
+        for key, action in key_actions.items():
+            if keys[key]:
+                if isinstance(action, tuple):
+                    # Update player's direction and orientation
+                    self.player.direction.x, self.player.orientation = action
+                else:
+                    # Call the action function
+                    if key == pygame.K_SPACE:
+                        action(self.player, -20)
+                    elif key == pygame.K_UP:
+                        action(self.player, -30)
 
     def jump(self, sprite, jump_height):
         '''Moves the sprite up
@@ -135,8 +146,9 @@ class Gameloop:
             sprite: The sprite doing the jumping.
             jump_height: The height of the jump
         '''
-        jump_speed = jump_height
-        sprite.direction.y = jump_speed
+        if sprite.on_floor:
+            jump_speed = jump_height
+            sprite.direction.y = jump_speed
 
     def handle_events(self):
         """Processes events in the event queue and updates the game state as necessary."""
@@ -145,13 +157,13 @@ class Gameloop:
                 return False
 
             if event.type == pygame.KEYDOWN:
-                if self.game_state == 0:
+                if self.game_state == GameState.INTRO_SCREEN:
                     self.handle_start_game_event(event)
-                elif self.game_state == 1:
+                elif self.game_state == GameState.GAMEPLAY:
                     self.handle_game_event(event)
-                elif self.game_state == 2:
+                elif self.game_state == GameState.PAUSE_SCREEN:
                     self.handle_pause_event(event)
-                elif self.game_state in (3, 4):
+                elif self.game_state in (GameState.END_SCREEN, GameState.VICTORY):
                     self.handle_end_of_game_event(event)
 
         return True
@@ -159,20 +171,20 @@ class Gameloop:
     def handle_start_game_event(self, event):
         """Handles a KEYDOWN event in the start game state."""
         if event.key == pygame.K_SPACE:
-            self.game_state = 1
+            self.game_state = GameState.GAMEPLAY
 
     def handle_game_event(self, event):
         """Handles a KEYDOWN event in the game state."""
         if event.key == pygame.K_p:
-            self.game_state = 2
+            self.game_state = GameState.PAUSE_SCREEN
         elif event.key == pygame.K_q or self.level.lives <= 0:
-            save_score(self.level.points, self.current_level)
-            self.game_state = 3
+            save_score(self.level.points, level=self.current_level)
+            self.game_state = GameState.END_SCREEN
 
     def handle_pause_event(self, event):
         """Handles a KEYDOWN event in the pause state."""
         if event.key == pygame.K_p:
-            self.game_state = 1
+            self.game_state = GameState.GAMEPLAY
 
     def handle_end_of_game_event(self, event):
         """Handles a KEYDOWN event in the game over state."""

@@ -6,11 +6,8 @@ from sprites.tiles import AnimatedTile
 
 
 class Enemy(AnimatedTile):
-    def __init__(self, pos, groups, image, collsion_sprites):
-        super().__init__(pos, groups, image)
-
-        self.collsion_sprites = collsion_sprites
-        self.direction = pygame.math.Vector2()
+    def __init__(self, pos, groups, image, collision_sprites):
+        super().__init__(pos, groups, image, collision_sprites)
 
     def horizontal_collision_check(self, collisionpoint):
         '''Checks for sprites collision with a collision sprite in a given location.
@@ -18,7 +15,7 @@ class Enemy(AnimatedTile):
         Args:
             collisionpoint: point where the collision is checked
         '''
-        return [sprite for sprite in self.collsion_sprites
+        return [sprite for sprite in self.collision_sprites
                 if sprite.rect.collidepoint(collisionpoint)]
 
     def horizontal_movement_collsion(self):
@@ -47,7 +44,7 @@ class Robot(Enemy):
             "robot", "robot.png")[0], collision_sprites)
 
         # robot movement
-        self.direction = pygame.math.Vector2(choice((1, -1)), 0)
+        self.direction = vector(choice((1, -1)), 0)
 
 
 class Zombie(Enemy):
@@ -56,7 +53,7 @@ class Zombie(Enemy):
             "zombie", "zombie.png")[0], collision_sprites)
 
         # zombie movement
-        self.direction = pygame.math.Vector2()
+        self.direction = vector()
 
 
 class Plane(Enemy):
@@ -64,14 +61,5 @@ class Plane(Enemy):
         super().__init__(pos, groups, pygame.transform.rotozoom(
             load_assets("plane", "plane.png")[0], 0, 1.8), collision_sprites)
 
-        # bee movement
-        self.direction = pygame.math.Vector2(choice((1, -1)), 0)
-
-
-class Ghost(Enemy):
-    def __init__(self, pos, groups, collision_sprites):
-        super().__init__(pos, groups, pygame.transform.rotozoom(
-            load_assets("ghost", "ghost.png")[0], 0, 1.8), collision_sprites)
-
-        # ghost movement
-        self.direction = pygame.math.Vector2(choice((1, -1)), 0)
+        # plane movement
+        self.direction = vector(choice((1, -1)), 0)

@@ -1,6 +1,6 @@
 import pygame
 import unittest
-from sprites.enemies import Robot, Zombie, Plane, Ghost
+from sprites.enemies import Robot, Zombie, Plane
 
 
 class TestEnemy(unittest.TestCase):
@@ -11,7 +11,6 @@ class TestEnemy(unittest.TestCase):
         self.zombie = Zombie((200, 0), [testgroup], collision)
         self.robot = Robot((300, 0), [testgroup], collision)
         self.bee = Plane((400, 0), [testgroup], collision)
-        self.ghost = Ghost((0, 300), [testgroup], collision)
 
     def test_robot_created_properly(self):
         self.assertNotEqual(self.robot, None)
@@ -21,6 +20,3 @@ class TestEnemy(unittest.TestCase):
 
     def test_plane_created_properly(self):
         self.assertNotEqual(self.bee, None)
-
-    def test_ghost_created_properly(self):
-        self.assertNotEqual(self.ghost, None)

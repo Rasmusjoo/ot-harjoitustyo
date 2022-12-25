@@ -3,6 +3,7 @@ import unittest
 from game_loop import Gameloop
 from level import Level
 from settings import WINDOW_HIGHT, WINDOW_WIDTH
+from gamestate import GameState
 
 
 class StubClock:
@@ -59,7 +60,7 @@ class TestGameloop(unittest.TestCase):
         testgameloop.handle_events()
         testgameloop.level.lives = 0
         testgameloop.handle_events()
-        self.assertEqual(testgameloop.game_state, 3)
+        self.assertEqual(testgameloop.game_state, GameState.END_SCREEN)
 
     def test_change_gamestate_pause(self):
         events = [
@@ -72,7 +73,7 @@ class TestGameloop(unittest.TestCase):
         testgameloop = Gameloop(
             testlevel, self.testrenderer, self.testclock, test_event_queue)
         testgameloop.handle_events()
-        self.assertEqual(testgameloop.game_state, 2)
+        self.assertEqual(testgameloop.game_state, GameState.PAUSE_SCREEN)
 
     def test_change_gamestate_unpause(self):
         events = [
@@ -85,7 +86,7 @@ class TestGameloop(unittest.TestCase):
         testgameloop = Gameloop(
             testlevel, self.testrenderer, self.testclock, test_event_queue)
         testgameloop.handle_events()
-        self.assertEqual(testgameloop.game_state, 1)
+        self.assertEqual(testgameloop.game_state, GameState.GAMEPLAY)
 
     def test_change_gamestate_quit(self):
         events = [
@@ -98,7 +99,7 @@ class TestGameloop(unittest.TestCase):
         testgameloop = Gameloop(
             testlevel, self.testrenderer, self.testclock, test_event_queue)
         testgameloop.handle_events()
-        self.assertEqual(testgameloop.game_state, 3)
+        self.assertEqual(testgameloop.game_state, GameState.END_SCREEN)
 
     def test_exit(self):
         events = [

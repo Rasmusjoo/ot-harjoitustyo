@@ -1,23 +1,19 @@
 import pygame
-from pygame import sprite
 from support import load_assets
+from sprites.tiles import AnimatedTile
 
 
-class Player(sprite.Sprite):
+class Player(AnimatedTile):
     def __init__(self, pos, sprite_groups, collision_sprites):
-        super().__init__(sprite_groups)
+        super().__init__(pos, sprite_groups,
+                         self.load_player_assets()[0], collision_sprites)
 
         self.assets = self.load_player_assets()
-        self.image = self.assets[0]  # idle image
-        self.mask = pygame.mask.from_surface(self.image)
-        self.rect = self.image.get_rect(topleft=pos)
-        self.on_floor = False
         self.status = "idle"
         self.orientation = "right"
-        self.collision_sprites = collision_sprites
 
-        # player movement
-        self.direction = pygame.math.Vector2()
+        self.movement = PlayerMovement(self)
+        self.animation = PlayerAnimation(self)
 
     def load_player_assets(self):
         """Loads the images for the player's different poses.
@@ -32,59 +28,77 @@ class Player(sprite.Sprite):
 
         return assets
 
+    def update(self):
+        '''Updates the player by calling functions
+        '''
+        self.movement.player_horizontal_movement_collision()
+        self.movement.player_vertical_movement_collision()
+        self.status = self.animation.get_status()
+        self.animation.animation()
+
+
+class PlayerMovement:
+    def __init__(self, player):
+        self.player = player
+
     def apply_gravity(self):
-        """Applies gravity to the sprite by increasing
+        """Applies gravity to the player by increasing
         its vertical velocity and updating its position.
         """
         gravity = 0.8
-        self.direction.y += gravity
-        self.rect.y += self.direction.y
+        self.player.direction.y += gravity
+        self.player.rect.y += self.player.direction.y
 
     def player_vertical_movement_collision(self):
         '''Applys gravity and checks for collision with floor or similiar
         '''
         self.apply_gravity()
-        for collision_sprite in self.collision_sprites.sprites():
-            if collision_sprite.rect.colliderect(self.rect):
-                if self.direction.y > 0:
-                    self.rect.bottom = collision_sprite.rect.top
-                    self.direction.y = 0
-                    self.on_floor = True
-                elif self.direction.y < 0:
-                    self.rect.top = collision_sprite.rect.bottom
-                    self.direction.y = 0
+        for collision_sprite in self.player.collision_sprites.sprites():
+            if collision_sprite.rect.colliderect(self.player.rect):
+                if self.player.direction.y > 0:
+                    self.player.rect.bottom = collision_sprite.rect.top
+                    self.player.direction.y = 0
+                    self.player.on_floor = True
+                elif self.player.direction.y < 0:
+                    self.player.rect.top = collision_sprite.rect.bottom
+                    self.player.direction.y = 0
 
-            if self.on_floor and self.direction.y != 0:
-                self.on_floor = False
+            if self.player.on_floor and self.player.direction.y != 0:
+                self.player.on_floor = False
 
     def player_horizontal_movement_collision(self):
         """Updates the player's position based on its horizontal
         velocity and handles collisions with collision sprites.
         """
         speed = 8
-        self.rect.x += self.direction.x * speed
+        self.player.rect.x += self.player.direction.x * speed
 
-        for collsion_sprite in self.collision_sprites.sprites():
-            if collsion_sprite.rect.colliderect(self.rect):
-                self.rect.x -= self.direction.x * speed
+        for collsion_sprite in self.player.collision_sprites.sprites():
+            if collsion_sprite.rect.colliderect(self.player.rect):
+                self.player.rect.x -= self.player.direction.x * speed
+
+
+class PlayerAnimation:
+    def __init__(self, player):
+        self.player = player
 
     def get_jump_status(self):
-        if self.direction.y < 0:
+        if self.player.direction.y < 0:
             return "jump"
         return None
 
     def get_fall_status(self):
-        if self.direction.y > 1:
+        if self.player.direction.y > 1:
             return "fall"
         return None
 
     def get_run_status(self):
-        if self.direction.x != 0:
+        if self.player.direction.x != 0:
             return "run"
         return None
 
     def get_idle_status(self):
-        if self.direction.x == 0:
+        if self.player.direction.x == 0:
             return "idle"
         return None
 
@@ -96,10 +110,10 @@ class Player(sprite.Sprite):
         """
         # Create a dictionary mapping states to the conditions that should trigger them
         state_conditions = {
-            "jump": self.direction.y < 0,
-            "fall": self.direction.y > 1,
-            "run": self.direction.x != 0,
-            "idle": self.direction.x == 0
+            "jump": self.player.direction.y < 0,
+            "fall": self.player.direction.y > 1,
+            "run": self.player.direction.x != 0,
+            "idle": self.player.direction.x == 0
         }
 
         # Iterate through the state conditions and return the first state that is True
@@ -117,23 +131,16 @@ class Player(sprite.Sprite):
         """
         # Map the player's status to the corresponding image in the assets list
         status_mapping = {
-            "jump": self.assets[2],
-            "fall": self.assets[3],
-            "run": self.assets[1],
-            "idle": self.assets[0]
+            "jump": self.player.assets[2],
+            "fall": self.player.assets[3],
+            "run": self.player.assets[1],
+            "idle": self.player.assets[0]
         }
 
         # Set the player's image to the corresponding image based on the status
-        self.image = status_mapping[self.status]
+        self.player.image = status_mapping[self.player.status]
 
         # Flip the image horizontally if the player is facing left
-        if self.orientation == "left":
-            self.image = pygame.transform.flip(self.image, True, False)
-
-    def update(self):
-        '''Updates the player by calling functions
-        '''
-        self.player_horizontal_movement_collision()
-        self.player_vertical_movement_collision()
-        self.status = self.get_status()
-        self.animation()
+        if self.player.orientation == "left":
+            self.player.image = pygame.transform.flip(
+                self.player.image, True, False)

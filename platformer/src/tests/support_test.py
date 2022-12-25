@@ -12,5 +12,6 @@ class TestSupport(unittest.TestCase):
         save_score(2)
         save_score(3)
         scores = fetch_scores()
-        score_list = [scores[-3], scores[-2], scores[-1]]
+        score_list = [scores[-3]["points"], scores[-2]
+                      ["points"], scores[-1]["points"]]
         self.assertEqual(points, score_list)

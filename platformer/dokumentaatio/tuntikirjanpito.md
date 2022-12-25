@@ -177,6 +177,24 @@
 
 - Käytetty noin 6 tuntia
 
+### 24.12
+
+- Parannettu pisteiden tallennusta tukemaan pelaajan nimen lisäystä
+
+- Lisätty spritejen hierarkiaa siirtämällä Player AnimatedTile luokan alaisuuteen.
+
+- Käytetty noin kolme tuntia
+
+### 25.12
+
+- Parannettu GameLoop luokkaa
+
+- Poistettu käyttämättömiä osia
+
+- Lisätty dokumentaatiota
+
+- Käytetty noin kuusi tuntia
+
 ## Yhteensä tunteja
 
-- Yhteensä 73 tuntia
+- Yhteensä 85 tuntia

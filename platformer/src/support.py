@@ -1,4 +1,5 @@
 import os
+import json
 import pygame
 dirname = os.path.dirname(__file__)
 
@@ -45,76 +46,81 @@ def load_level(levelmap):
     return level_data
 
 
-def save_score(points, level=None, file=None):
+def save_score(points, player_name=None, level=None, file=None):
     '''Saves the game's score to a file
 
     Args:
         points: Amount of points gained in the game.
+        player_name (optional): The nametag of the player
         level (optional): The level the player was playing when they achieved the score.
         file (optional): The name of the file to save the score to.
 
     '''
+    if not player_name:
+        player_name = "player_1"
     if not file:
-        file = "scores.txt"
+        file = "scores.json"
     if not level:
         level = "1"
     file_path = os.path.join(dirname, "data", "scores", f"level_{level}", file)
 
-    # Handle errors when opening or writing to the file
+    # Load the existing scores from the file
     try:
-        with open(file_path, "a", encoding="utf-8") as score_file:
-            score_file.write(f"{points}\n")
+        with open(file_path, "r", encoding="utf-8") as score_file:
+            scores = json.load(score_file)
+    except IOError:
+        scores = []
+
+    # Add the new score to the list
+    scores.append({"points": points, "player_name": player_name})
+
+    # Save the updated list of scores to the file
+    try:
+        with open(file_path, "w", encoding="utf-8") as score_file:
+            json.dump(scores, score_file)
     except IOError as error:
         print(f"Error saving score: {error}")
 
 
 def fetch_scores(level=None, file=None):
-    '''Reads scores from a file and returns them as a list
+    '''Fetches the scores from the file
 
     Args:
-        level (optional): The level to read the scores from.
-        file (optional): The name of the file to read the scores from.
+        level (optional): The level to fetch the scores for.
+        file (optional): The name of the file to fetch the scores from.
 
     Returns:
-        scores: A list of scores from previous games.
-
+        scores : A list of scores. Each score is a dictionary
+        containing "points" and "player_name" keys.
     '''
     if not file:
-        file = "scores.txt"
+        file = "scores.json"
     if not level:
         level = "1"
-    scores = []
     file_path = os.path.join(dirname, "data", "scores", f"level_{level}", file)
 
-    # Handle errors when opening or reading from the file
+    # Load the scores from the file
     try:
         with open(file_path, "r", encoding="utf-8") as score_file:
-            for line in score_file:
-                try:
-                    score = int(line[:-1])
-                except ValueError:
-                    print(f"Error: invalid score '{line[:-1]}'")
-                    continue
-                scores.append(score)
-    except IOError as error:
-        print(f"Error fetching scores: {error}")
+            scores = json.load(score_file)
+    except IOError:
         scores = []
 
     return scores
 
 
-def kill_all_sprites(group):
-    """Removes all sprites from the specified group.
+def kill_all_sprites(groups):
+    """Removes all sprites from the specified groups.
 
     Args:
-        group: The sprite group from which to remove sprites.
+        groups: A sprite group or a list of sprite groups from which to remove sprites.
 
     Returns:
         None
     """
-    group.empty()
+    # If groups is a single group, wrap it in a list
+    if isinstance(groups, pygame.sprite.Group):
+        groups = [groups]
 
-
-if __name__ == "__main__":
-    save_score(6)
-    fetch_scores()
+    for group in groups:
+        group.empty()

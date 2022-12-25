@@ -2,12 +2,13 @@
 
 ## Sovelluksen tarkoitus
 
-Sovelluksen tarkoituksena on olla Pygame pohjainen peli. Suunnitelmana olisi, että peli muistuttaisi tasohyppelypeliä tai Asteroids tyyppistä peliä. Pelaaja pyrkii pysymään pelissä mahdollisimman pitkään kunnes saavuttaa pelin lopun. Peli on tarkoitettu viihdyttämään, mutta lisäksi siihen on suunnitteilla kilpailuelementtejä.
+Sovellus on Pygame pohjainen tasohyppelypeli. Peliisä on tavoitteena löytää tähti väistellen vihollisia ja keräten kolikoita matkan varrella.
+Sovellusta voi pelata vain yksi pelaaja kerrallaan eli se on yksinpeli.
+Kilpailla voi kuitenkin pelaamalla vuorotellen yrittäen saada toisia paremman tuloksen.
 
 ## Käyttäjät
 
-Sovelluksella on ainoastaan yksi käyttäjärooli eli normaali käyttäjä eli pelaaja. Alkuvaiheessa peli on tarkoitettu vain yhdelle pelaajalle kerrallaan.
-On mahdollista, että myöhemmin lisätään mahdollisuus kahden pelaajan peliin.
+Sovelluksella on ainoastaan yksi käyttäjärooli eli pelaaja. Peli on tarkoitettu vain yhdelle pelaajalle kerrallaan.
 
 ## Perusversion tarjoama toiminnallisuus
 

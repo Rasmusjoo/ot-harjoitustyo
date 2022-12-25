@@ -23,13 +23,19 @@ def create_window():
     return window
 
 
-def create_game_objects(window):
+def create_game_objects(window, level_number=None):
     """Creates the game objects.
+
+    Args:
+        window: A window the game is displayed on
+        level_number: number of the level to play
 
     Returns:
         A tuple containing the level, renderer, clock, and event queue.
     """
-    level = Level(1)
+    if not level_number:
+        level_number = "test"
+    level = Level(level_number)
     renderer = Renderer(level, window)
     clock = Clock()
     event_queue = EventQueue()
@@ -41,15 +47,15 @@ def run_game_loop(level, renderer, clock, event_queue):
     """Runs the main game loop.
     """
     gameloop = Gameloop(level, renderer, clock, event_queue)
-    pygame.init()
     gameloop.start()
 
 
 def main():
     """Starts the game.
     """
+    pygame.init()
     window = create_window()
-    level, renderer, clock, event_queue = create_game_objects(window)
+    level, renderer, clock, event_queue = create_game_objects(window, 1)
     run_game_loop(level, renderer, clock, event_queue)
 
 

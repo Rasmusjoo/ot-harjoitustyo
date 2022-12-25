@@ -81,3 +81,9 @@
 -Lisätty testejä
 
 -Siirretty liikkuminen pois Level luokasta
+
+-Parannettu pisteiden tallennusta
+
+- Siirretty tallennus JSON-tiedostoon
+
+- Nyt tallennus tukee myös pelaajan nimen lisäystä

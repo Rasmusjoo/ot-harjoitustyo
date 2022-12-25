@@ -45,8 +45,9 @@ class Cloud(StaticTile):
 
 
 class AnimatedTile(Tile):
-    def __init__(self, pos, groups, image):
+    def __init__(self, pos, groups, image, collision_sprites):
         super().__init__(pos, groups, image)
 
-        self.mask = pygame.mask.from_surface(self.image)
+        self.collision_sprites = collision_sprites
+        self.direction = pygame.math.Vector2()
         self.on_floor = False

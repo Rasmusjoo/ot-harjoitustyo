@@ -16,6 +16,8 @@ Sovellus on suunniteltu Python 3.8 järjestelmälle ja sitä uudemmille versioil
 
 [Käyttöohje](platformer/dokumentaatio/kaytto-ohje.md)
 
+[Testidokumentti](platformer/dokumentaatio/testidokumentti.md)
+
 ## Julkaisut
 Linkki ensimmäiseen julkaisuun löytyy alta.
 
@@ -29,6 +31,7 @@ Asenna riippuvuudet komennolla:
 ```bash
 poetry install
 ```
+HUOM tässä oletetaan, että Poetry on jo asennettu.
 
 ## Komentorivitoiminnot
 
@@ -72,4 +75,5 @@ Pelissä liikutaan nuolinäppäimin oikealle tai vasemmalle. Lisäksi pelissä o
 joista pienempi tehdään painamalla SPACE painiketta ja suurempi ylänuolella. Hyppyjä ei voi suorittaa ilmassa.
 
 Keskeyttää pelin voi painamalla P painiketta ja lopettaasen voi Q painikkeesta. Peli sammuu painamalla rastia yläkulmassa.
-Pelin loputtua sen voi aloittaa uudelleen painamalla S painiketta.
+Pelin loputtua sen voi aloittaa uudelleen painamalla S painiketta. Seuraavaan tasoon voi siityä loppuruudusta tai
+voittoruudusta painamalla C painiketta.
